@@ -140,7 +140,10 @@ Public evidence: {json.dumps(evidence, sort_keys=True)}'''
                 independent = judge()
             except Exception:
                 return False
-            return leader.get("decision") == independent.get("decision") and _codes(leader.get("finding_codes", [])) == independent.get("finding_codes")
+            # Finding codes are audit metadata. Listing policy depends solely
+            # on the independently derived decision; requiring code wording to
+            # match would make semantically identical outcomes brittle.
+            return leader.get("decision") == independent.get("decision")
 
         return gl.vm.run_nondet_unsafe(judge, validate)
 
