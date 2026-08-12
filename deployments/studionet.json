@@ -1,1 +1,1 @@
-﻿{"network":"studionet","status":"PENDING","note":"Updated after live deployment."}
+{"network":"studionet","chain_id":61999,"status":"FINALIZED","contract_address":"0x5aF69a71F0dCB128668604eaF13C072d85d14F57","deployment_transaction":"0x0aecafba5d54702cb0dad5bd02a0a1f407b00de045c8d2fc377ca244fefd49b9","decision_transaction":"0x3abfae0721e9fdcbab8260830847454fbb9e25443f857e905e2ae73386de6b2b","outcome":"UNVERIFIABLE (insufficient capability evidence; fail-closed)."}
