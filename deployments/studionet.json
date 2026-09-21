@@ -1,1 +1,44 @@
-{"network":"studionet","chain_id":61999,"status":"FINALIZED","contract_address":"0x5aF69a71F0dCB128668604eaF13C072d85d14F57","deployment_transaction":"0x0aecafba5d54702cb0dad5bd02a0a1f407b00de045c8d2fc377ca244fefd49b9","decision_transaction":"0x3abfae0721e9fdcbab8260830847454fbb9e25443f857e905e2ae73386de6b2b","outcome":"UNVERIFIABLE (insufficient capability evidence; fail-closed)."}
+{
+  "contract": "TokenClaimCapabilityGate",
+  "network": "studionet",
+  "chain_id": 61999,
+  "deployer": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+  "source_file": "contracts/token_claim_capability_gate.py",
+  "source_commit": "0d41f253db60f9a0739a7a2915a27b478bc307f6",
+  "runner": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
+  "contract_address": "0x2044C9554407f96e4Fa1aD1374C9b969b182E136",
+  "deployment_transaction": "0x3b4fcbf3a509f159673f59f85358cc2e855f4958fcdce1e66f39ae3a93cba209",
+  "deployment_status": "FINALIZED",
+  "explorer_url": "https://explorer-studio.genlayer.com/address/0x2044C9554407f96e4Fa1aD1374C9b969b182E136",
+  "constructor_args": [
+    "weth9-mainnet",
+    "{\"claims\":[{\"id\":\"no_admin\",\"text\":\"No owner or admin role can mint, freeze, or seize holder balances.\"},{\"id\":\"fully_backed\",\"text\":\"Tokens are created only by depositing an equal amount of ETH and destroyed only on withdrawal.\"},{\"id\":\"no_fee\",\"text\":\"Transfers charge no fee.\"}]}",
+    "{\"chain\":\"eip155:1\",\"token_address\":\"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2\",\"name\":\"Wrapped Ether (WETH9)\"}",
+    "[\"https://raw.githubusercontent.com/gnosis/canonical-weth/master/contracts/WETH9.sol\"]",
+    1,
+    "2027-12-31T00:00:00Z"
+  ],
+  "consensus_test_transaction": "0xe654c4ded35e451639603d768431fe4e3aba5d4c63faf410ff16ee49422c8e2b",
+  "consensus_test_status": "FINALIZED",
+  "expected_state": {
+    "status": "CONSISTENT"
+  },
+  "consensus_test_state": {
+    "attempts": 1,
+    "claim_states": {
+      "fully_backed": "HOLDS",
+      "no_admin": "HOLDS",
+      "no_fee": "HOLDS"
+    },
+    "contradicted_claims": [],
+    "max_wait": "2027-12-31T00:00:00+00:00",
+    "min_sources": 1,
+    "qualified_claims": [],
+    "source_coverage": 1,
+    "status": "CONSISTENT",
+    "terminal": true,
+    "token_id": "weth9-mainnet"
+  },
+  "matches_expected": true,
+  "deployed_utc": "2026-09-21"
+}
