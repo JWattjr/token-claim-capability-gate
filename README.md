@@ -48,8 +48,9 @@ See docs/SECURITY_AUDIT.md, docs/TEST_MATRIX.md, and the
 
 [`deployments/studionet-release-2026-09-23.json`](deployments/studionet-release-2026-09-23.json)
 is the **current submission evidence** for source commit
-`db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb`. The deployed source bytes
-matched the published file's SHA-256 exactly. The [StudioNet contract](https://explorer-studio.genlayer.com/address/0x33445EEF1a870071D33D3141c512898c2AaeF3f0)
+`db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb`. The deployed code matched
+that Git source after CRLF-to-LF normalization; raw hashes differ only because
+of line endings, as recorded in the manifest. The [StudioNet contract](https://explorer-studio.genlayer.com/address/0x33445EEF1a870071D33D3141c512898c2AaeF3f0)
 and its deployment and review transactions finalized with successful leader
 execution and majority agreement. The review had **3 AGREE / 2 DISAGREE**;
 read-back state is terminal `BLOCKED`, with `no_admin_mint = CONTRADICTED`,

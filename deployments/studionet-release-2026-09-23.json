@@ -7,11 +7,15 @@
   "chain_id": 61999,
   "source_file": "contracts/token_claim_capability_gate.py",
   "source_commit": "db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb",
-  "source_sha256_raw_utf8": "b248636a9173891f30fb9c57477e207bd91ad1548d68d899e4bce90bf6cc688a",
+  "deployed_source_sha256_raw_utf8": "b248636a9173891f30fb9c57477e207bd91ad1548d68d899e4bce90bf6cc688a",
+  "published_source_sha256_lf_utf8": "90d01d1a955d45d6a21b0a1aa1682f1a1a2dca6b5f1b16db9864c239de623b72",
   "source_identity": {
     "verified": true,
-    "method": "Decoded gen_getContractCode source bytes and compared SHA-256 with the published release file",
-    "deployed_code_bytes": 11863
+    "method": "Decoded gen_getContractCode source bytes and normalized CRLF to LF; the result matched the source Git blob at source_commit exactly",
+    "raw_bytes_equal_to_git_blob": false,
+    "line_ending_difference": "Deployed working file had 213 CRLF sequences; published Git blob has LF at those positions",
+    "deployed_code_bytes": 11863,
+    "published_source_bytes": 11650
   },
   "runner": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
   "deployer": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",

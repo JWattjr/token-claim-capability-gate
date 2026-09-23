@@ -41,3 +41,4 @@ This is an engineering audit, not formal verification, and not financial or lega
 - Listing actions must wait for GenLayer finality.
 - `deployments/studionet.json` records historical commit `0d41f253db60f9a0739a7a2915a27b478bc307f6`. Current live evidence is in `deployments/studionet-release-2026-09-23.json` for commit `db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb`.
 - The current DAI StudioNet review finalized with 3 AGREE and 2 DISAGREE, terminal `BLOCKED`, and source coverage 1. This demonstrates one hypothetical two-claim case, not unanimous validator execution or semantic prompt-injection resistance. Sourcify reports a Match, not an Exact Match.
+- Deployed source identity was checked against the published release Git blob after CRLF-to-LF normalization. Raw SHA-256 hashes differ because the deployed working file had 213 CRLF sequences while Git stored LF. The current manifest records both hashes and byte counts.
