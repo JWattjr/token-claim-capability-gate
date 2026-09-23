@@ -42,17 +42,27 @@ never reviewed becomes `UNVERIFIABLE`).
     python -m pytest tests -v
 
 See docs/SECURITY_AUDIT.md, docs/TEST_MATRIX.md, and the
-[StudioNet constructor candidate](docs/STUDIONET_RELEASE_CANDIDATE.md).
+[StudioNet constructor example](docs/STUDIONET_RELEASE_CANDIDATE.md).
 
-## Deployment evidence scope
+## Current StudioNet evidence
 
-`deployments/studionet.json` records a finalized StudioNet result for source
-commit `0d41f253db60f9a0739a7a2915a27b478bc307f6`. The local source now has
-additional evidence-validation fixes and is **not** the source at that address.
-The historical WETH9 input was a 36.8 KB GitHub file, while that deployed
-contract read only its first 15,000 bytes. The result is a consensus on an
-excerpt, not proof that the complete source was examined or cryptographically
-matched to the mainnet address. A bounded, address-linked DAI source and exact
-constructor example are prepared in docs/STUDIONET_RELEASE_CANDIDATE.md. A
-finalized StudioNet deployment and review of the current source are still
-required for current live proof.
+[`deployments/studionet-release-2026-09-23.json`](deployments/studionet-release-2026-09-23.json)
+is the **current submission evidence** for source commit
+`db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb`. The deployed source bytes
+matched the published file's SHA-256 exactly. The [StudioNet contract](https://explorer-studio.genlayer.com/address/0x33445EEF1a870071D33D3141c512898c2AaeF3f0)
+and its deployment and review transactions finalized with successful leader
+execution and majority agreement. The review had **3 AGREE / 2 DISAGREE**;
+read-back state is terminal `BLOCKED`, with `no_admin_mint = CONTRADICTED`,
+`no_transfer_fee = HOLDS`, and source coverage 1.
+
+The DAI claims are hypothetical examples, not statements attributed to the
+issuer. Sourcify reports a functional-bytecode **Match**, not an Exact Match,
+for the address-linked source. This live result demonstrates one bounded-source
+claim comparison, not every lifecycle or security path in the local tests.
+
+## Historical record
+
+`deployments/studionet.json` remains historical evidence for source commit
+`0d41f253db60f9a0739a7a2915a27b478bc307f6`. Its WETH9 input was a
+36.8 KB GitHub file, but that deployment read only a 15,000-byte prefix. It
+does not prove the current source or a complete address-matched WETH9 review.

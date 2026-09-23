@@ -1,0 +1,88 @@
+{
+  "evidence_role": "CURRENT_STUDIONET_SUBMISSION_EVIDENCE",
+  "historical": false,
+  "submission_scope": "studionet-only",
+  "contract": "TokenClaimCapabilityGate",
+  "network": "studionet",
+  "chain_id": 61999,
+  "source_file": "contracts/token_claim_capability_gate.py",
+  "source_commit": "db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb",
+  "source_sha256_raw_utf8": "b248636a9173891f30fb9c57477e207bd91ad1548d68d899e4bce90bf6cc688a",
+  "source_identity": {
+    "verified": true,
+    "method": "Decoded gen_getContractCode source bytes and compared SHA-256 with the published release file",
+    "deployed_code_bytes": 11863
+  },
+  "runner": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
+  "deployer": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+  "contract_address": "0x33445EEF1a870071D33D3141c512898c2AaeF3f0",
+  "explorer_contract_url": "https://explorer-studio.genlayer.com/address/0x33445EEF1a870071D33D3141c512898c2AaeF3f0",
+  "constructor_args": [
+    "dai-mainnet-illustrative-claims",
+    "{\"claims\":[{\"id\":\"no_admin_mint\",\"text\":\"No privileged address can mint additional DAI.\"},{\"id\":\"no_transfer_fee\",\"text\":\"The token contract deducts no fee from a successful transfer: the amount debited from the sender is credited in full to the recipient.\"}]}",
+    "{\"chain\":\"eip155:1\",\"token_address\":\"0x6B175474E89094C44Da98b954EedeAC495271d0F\",\"name\":\"Dai Stablecoin\"}",
+    "[\"https://sourcify.dev/server/v2/contract/1/0x6B175474E89094C44Da98b954EedeAC495271d0F?fields=sources\"]",
+    1,
+    "2027-12-31T00:00:00Z"
+  ],
+  "deployment_receipt": {
+    "transaction_hash": "0x33184430e8f0ff16bede50a3c79c6378dc3076ea8671687e6996140925db51a7",
+    "explorer_url": "https://explorer-studio.genlayer.com/tx/0x33184430e8f0ff16bede50a3c79c6378dc3076ea8671687e6996140925db51a7",
+    "status": "FINALIZED",
+    "leader_execution": "SUCCESS",
+    "consensus": "MAJORITY_AGREE",
+    "validator_votes": { "agree": 3, "disagree": 0, "idle": 2 },
+    "note": "Two validators were idle after quorum; validator cancellation did not indicate a failed deployment."
+  },
+  "review_receipt": {
+    "transaction_hash": "0xfb2e134f5a966de6eb25acf25488cbe41842d9900848070527c512e58147772c",
+    "explorer_url": "https://explorer-studio.genlayer.com/tx/0xfb2e134f5a966de6eb25acf25488cbe41842d9900848070527c512e58147772c",
+    "status": "FINALIZED",
+    "leader_execution": "SUCCESS",
+    "consensus": "MAJORITY_AGREE",
+    "validator_votes": { "agree": 3, "disagree": 2, "idle": 0 }
+  },
+  "readback_state": {
+    "token_id": "dai-mainnet-illustrative-claims",
+    "status": "BLOCKED",
+    "terminal": true,
+    "claim_states": {
+      "no_admin_mint": "CONTRADICTED",
+      "no_transfer_fee": "HOLDS"
+    },
+    "contradicted_claims": ["no_admin_mint"],
+    "qualified_claims": [],
+    "source_coverage": 1,
+    "min_sources": 1,
+    "max_wait": "2027-12-31T00:00:00+00:00",
+    "attempts": 1
+  },
+  "source_evidence": {
+    "url": "https://sourcify.dev/server/v2/contract/1/0x6B175474E89094C44Da98b954EedeAC495271d0F?fields=sources",
+    "sourcify_contract_url": "https://repo.sourcify.dev/1/0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "sourcify_match": "match",
+    "exact_match": false,
+    "preflight_http_status": 200,
+    "preflight_response_bytes": 8603,
+    "source_file": "Dai.sol",
+    "source_file_utf8_bytes": 7965,
+    "checked_on": "2026-09-23"
+  },
+  "live_demonstration_scope": {
+    "demonstrated": "Frozen hypothetical token claims, one bounded address-linked public source, independent majority validation, deterministic BLOCKED outcome, and terminal state readback.",
+    "not_demonstrated_live": [
+      "real issuer claim verification",
+      "QUALIFIED or UNVERIFIABLE paths",
+      "retry and max-wait behavior",
+      "semantic prompt-injection resistance"
+    ]
+  },
+  "public_link_verification": {
+    "checked_on": "2026-09-23",
+    "explorer_contract_http_status": 200,
+    "explorer_deployment_transaction_http_status": 200,
+    "explorer_review_transaction_http_status": 200,
+    "github_repository_visibility": "PUBLIC"
+  },
+  "recorded_at_utc": "2026-09-23T15:16:13Z"
+}

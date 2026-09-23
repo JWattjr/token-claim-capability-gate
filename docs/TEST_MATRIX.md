@@ -18,3 +18,8 @@
 | Bad `min_sources` or `max_wait` | Constructor reverts | `test_constructor_rejects_bad_lifecycle` (4 cases) |
 | Bad constructor input (claims, private/IPv6/ported/whitespace or duplicate URLs) | Constructor reverts | `test_constructor_rejections` (9 cases) |
 | Finality | Listing actions wait for GenLayer finality | Consumer responsibility |
+| Live StudioNet DAI example | Current source, byte-for-byte identity, one source, mixed vector, terminal `BLOCKED` after FINALIZED majority (3 AGREE, 2 DISAGREE) | `deployments/studionet-release-2026-09-23.json` |
+
+The live example does not establish `QUALIFIED`, `UNVERIFIABLE`, retry/deadline,
+or semantic prompt-injection behavior. Those paths have local direct-mode
+coverage where listed above; mocked tests are not live validator proof.

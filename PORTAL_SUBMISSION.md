@@ -3,28 +3,38 @@
 **Contribution type:** Builder → Intelligent Contracts
 **Title:** Token Claim-Capability Coherence Gate
 
-## Notes / Description (release candidate; do not paste until redeployed)
+## Notes / Description (ready to paste)
 
-Token Claim-Capability Coherence Gate is an MIT-licensed, reusable GenLayer listing primitive for comparing frozen token claims with public capability evidence. The constructor freezes 1-12 claim IDs and texts, a capability context, evidence URLs, a minimum number of complete sources, and a max-wait deadline. Leader and validators independently classify each claim as HOLDS, QUALIFIED, CONTRADICTED, or UNCLEAR. Code—not the LLM—derives CONSISTENT, DISCLOSURE_REQUIRED, BLOCKED, or UNVERIFIABLE and the named claim lists; the validator compares the entire result. Unusable sources count as unavailable; fewer usable sources than the frozen minimum, or any unclear claim, yields UNVERIFIABLE. CONSISTENT and BLOCKED are terminal; other results can be retried until the deadline. The current release candidate has 28 passing focused direct tests, a pinned GenVM runner, security notes, and a test matrix. The prior finalized StudioNet result reached CONSISTENT on an excerpt of a WETH9 GitHub file, not a complete, address-matched source audit and not on this patched source. The contract holds no funds.
+Token Claim-Capability Coherence Gate is an MIT-licensed GenLayer listing primitive. A deployer freezes token claims, capability context, public HTTPS evidence, minimum source coverage, and a deadline. Leader and validators independently classify each claim; deterministic code derives CONSISTENT, DISCLOSURE_REQUIRED, BLOCKED, or UNVERIFIABLE and binds the full result through exact validator comparison. The current source was deployed and reviewed on StudioNet against Sourcify's address-linked DAI source (Match, not Exact Match). For two explicitly hypothetical claims, validators found no-admin-mint CONTRADICTED and no-transfer-fee HOLDS. The FINALIZED review had successful leader execution and 3 AGREE / 2 DISAGREE, producing terminal BLOCKED with coverage 1. Deployed source identity was verified byte-for-byte; 28 focused tests pass. The example does not attribute these claims to the DAI issuer or prove prompt-injection resistance.
 
-**Current live-proof status:** NOT READY. `deployments/studionet.json` is historical evidence for commit `0d41f253db60f9a0739a7a2915a27b478bc307f6`. A bounded, address-linked DAI constructor example is prepared in `docs/STUDIONET_RELEASE_CANDIDATE.md`; redeploy the patched contract on StudioNet, verify source identity and finality, then replace the live-proof paragraph and manifest.
+## Current submission proof
 
-## Evidence to add after publishing the candidate and collecting new live proof
+- **Current manifest:** `deployments/studionet-release-2026-09-23.json`
+- **Source commit:** `db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb`
+- **StudioNet contract:** `0x33445EEF1a870071D33D3141c512898c2AaeF3f0`
+- **Deployment transaction:** `0x33184430e8f0ff16bede50a3c79c6378dc3076ea8671687e6996140925db51a7` — FINALIZED, leader SUCCESS, MAJORITY_AGREE (3 AGREE, 2 IDLE after quorum).
+- **Review transaction:** `0xfb2e134f5a966de6eb25acf25488cbe41842d9900848070527c512e58147772c` — FINALIZED, leader SUCCESS, MAJORITY_AGREE (3 AGREE, 2 DISAGREE).
+- **Read-back state:** `BLOCKED`, terminal, `no_admin_mint = CONTRADICTED`, `no_transfer_fee = HOLDS`, coverage 1, attempts 1.
 
-1. GitHub Repository — https://github.com/JWattjr/token-claim-capability-gate
-2. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/contracts/token_claim_capability_gate.py
-3. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/tests/test_gate.py
-4. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/SECURITY_AUDIT.md
-5. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/TEST_MATRIX.md
-6. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/STUDIONET_RELEASE_CANDIDATE.md
-7. GitHub File (historical source only) — https://github.com/JWattjr/token-claim-capability-gate/blob/main/deployments/studionet.json
-8. GenLayer Explorer Contract (historical source only) — https://explorer-studio.genlayer.com/address/0x2044C9554407f96e4Fa1aD1374C9b969b182E136
+## Evidence to add to the Portal
 
-Historical resolution transaction hash: `0xe654c4ded35e451639603d768431fe4e3aba5d4c63faf410ff16ee49422c8e2b`. Its direct Explorer URL could not be verified from this environment, so do not add an invented path.
+1. GenLayer Explorer Contract — https://explorer-studio.genlayer.com/address/0x33445EEF1a870071D33D3141c512898c2AaeF3f0
+2. GitHub Repository — https://github.com/JWattjr/token-claim-capability-gate
+3. GitHub File (current release manifest) — https://github.com/JWattjr/token-claim-capability-gate/blob/main/deployments/studionet-release-2026-09-23.json
+4. GitHub File (deployed source commit) — https://github.com/JWattjr/token-claim-capability-gate/blob/db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb/contracts/token_claim_capability_gate.py
+5. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/tests/test_gate.py
+6. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/TEST_MATRIX.md
+7. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/SECURITY_AUDIT.md
+8. GitHub File — https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/STUDIONET_RELEASE_CANDIDATE.md
+9. Other (deployment receipt) — https://explorer-studio.genlayer.com/tx/0x33184430e8f0ff16bede50a3c79c6378dc3076ea8671687e6996140925db51a7
+10. Other (review receipt) — https://explorer-studio.genlayer.com/tx/0xfb2e134f5a966de6eb25acf25488cbe41842d9900848070527c512e58147772c
+11. Other (verified DAI source record) — https://repo.sourcify.dev/1/0x6B175474E89094C44Da98b954EedeAC495271d0F
 
-## StudioNet release checklist
+`deployments/studionet.json` and its WETH9 Explorer address are **historical**;
+they are not proof of this current source or DAI result.
 
-1. Recheck the DAI Sourcify API source in `docs/STUDIONET_RELEASE_CANDIDATE.md`: HTTP 200, complete UTF-8 response at most 15,000 bytes, chain/address and `match` fields, source content, and GenVM reachability. The historical 36.8 KB WETH9 file cannot be used by the patched contract. Sourcify reports a Match, not an Exact Match.
-2. Commit and publish the patched source and tests. Record the exact commit and source hash; do not reuse the historical deployment as proof of it.
-3. Deploy on **StudioNet only**, complete a permissionless `review()`, and verify both transactions are FINALIZED with successful execution and majority agreement. Read back the final state and compare it with the frozen constructor inputs.
-4. Save a new manifest with address, release commit, constructor, transaction hashes, receipts, validator outcome, final state, and verified Explorer links. Then update the Portal text and evidence list.
+The live example covers a bounded source and one mixed claim vector. The
+QUALIFIED, UNVERIFIABLE, retry, deadline, and injection paths are not proven
+by this live transaction; consult the local test matrix and security audit for
+their separate scope. Submit only after the current manifest and evidence URLs
+are publicly readable at the published revision.

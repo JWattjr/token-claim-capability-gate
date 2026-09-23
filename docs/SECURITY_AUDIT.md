@@ -39,4 +39,5 @@ This is an engineering audit, not formal verification, and not financial or lega
 - The historical WETH9 URL serves a 36.8 KB file; the deployed source used a 15,000-byte prefix. That live result is not a full-source review. The local candidate now rejects the oversized body.
 - Mocked direct tests do not prove semantic prompt-injection resistance or independent live-validator correctness.
 - Listing actions must wait for GenLayer finality.
-- The StudioNet manifest records commit `0d41f253db60f9a0739a7a2915a27b478bc307f6`; it is historical relative to these uncommitted fixes.
+- `deployments/studionet.json` records historical commit `0d41f253db60f9a0739a7a2915a27b478bc307f6`. Current live evidence is in `deployments/studionet-release-2026-09-23.json` for commit `db3d97dc84f06fb84b9ffb72a0f1d2ff676f0ceb`.
+- The current DAI StudioNet review finalized with 3 AGREE and 2 DISAGREE, terminal `BLOCKED`, and source coverage 1. This demonstrates one hypothetical two-claim case, not unanimous validator execution or semantic prompt-injection resistance. Sourcify reports a Match, not an Exact Match.

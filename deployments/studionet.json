@@ -1,4 +1,6 @@
 {
+  "evidence_role": "HISTORICAL_SOURCE_ONLY",
+  "historical": true,
   "contract": "TokenClaimCapabilityGate",
   "network": "studionet",
   "chain_id": 61999,

@@ -1,8 +1,10 @@
 # StudioNet release candidate: DAI capability example
 
-This is a constructor example for the **current local source**, not a deployment
-record or a claim about a live GenLayer result. The claims below are deliberately
-hypothetical; they are not statements attributed to the DAI issuer.
+This is the frozen constructor example used for the current StudioNet release.
+The live deployment and review proof is in
+[`deployments/studionet-release-2026-09-23.json`](../deployments/studionet-release-2026-09-23.json).
+The claims below are deliberately hypothetical; they are not statements
+attributed to the DAI issuer.
 
 ## Public evidence checked on 2026-09-23
 
@@ -38,13 +40,13 @@ from GenVM may differ from this local preflight.
 ]
 ```
 
-The expected interpretation is `no_admin_mint = CONTRADICTED` and
-`no_transfer_fee = HOLDS`, yielding `BLOCKED` through deterministic derivation.
-This is an expectation for the demo, not a mock-test result or a live consensus
-claim. If validators disagree or the evidence is unavailable, record the actual
-result rather than asserting the expected one.
+The live StudioNet review produced `no_admin_mint = CONTRADICTED` and
+`no_transfer_fee = HOLDS`, yielding terminal `BLOCKED` through deterministic
+derivation. Its receipt finalized with successful leader execution and a
+3 AGREE / 2 DISAGREE majority. This does not attribute either claim to DAI's
+issuer or establish behavior for other claim vectors.
 
-After checking that the CLI network is `studionet`, run `genlayer deploy` from
-this repository. `deploy/00_deploy_token.js` passes the JSON fields as strings,
-prints the source SHA-256 and transaction hash, and uses the active CLI account.
-Wait for a successful FINALIZED deployment receipt before calling `review()`.
+The release used `genlayer deploy` on `studionet`.
+`deploy/00_deploy_token.js` passes JSON fields as strings and prints the source
+SHA-256 and transaction hash. Running it again would create a new contract;
+the current address and receipts are in the release manifest.
