@@ -80,6 +80,16 @@ def test_all_sources_unavailable_fails_closed(direct_vm, direct_deploy):
     assert result["decision"] == "UNVERIFIABLE" and result["source_coverage"] == 0
 
 
+@pytest.mark.parametrize("body", ["", " ", "x" * 15001, b"\xff"])
+def test_empty_oversized_or_invalid_evidence_is_not_counted(direct_vm, direct_deploy, body):
+    c = _deploy(direct_deploy)
+    direct_vm.mock_web(r".*", {"status": 200, "body": body})
+    direct_vm.mock_llm(r".*", json.dumps({"claim_states": ALL_HOLD}))
+    result = c.review()
+    assert result["decision"] == "UNVERIFIABLE" and result["source_coverage"] == 0
+    assert direct_vm.run_validator()
+
+
 def test_validator_rejects_forged_vector_with_same_decision(direct_vm, direct_deploy):
     c = _deploy(direct_deploy)
     _mock(direct_vm, dict(ALL_HOLD, no_mint="CONTRADICTED"))
@@ -141,6 +151,9 @@ def test_constructor_rejects_bad_lifecycle(direct_vm, direct_deploy, min_sources
     ({"claims": [{"id": "a"}]}, URLS, "text"),
     (CLAIMS, ["https://10.0.0.1/a"], "publicly reachable"),
     (CLAIMS, ["https://service.internal/a"], "publicly reachable"),
+    (CLAIMS, ["https://[::1]/a"], "invalid"),
+    (CLAIMS, ["https://example.org:443/a"], "invalid"),
+    (CLAIMS, ["https://example.org /a"], "invalid"),
     (CLAIMS, URLS + URLS, "unique"),
 ])
 def test_constructor_rejections(direct_vm, direct_deploy, claims, urls, message):

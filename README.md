@@ -8,7 +8,11 @@ minting" or "balances cannot be frozen") coherent with what the token can actual
 The deployer freezes 1-12 claims (unique id plus text), the capability context
 (chain, token address, and so on), 1-6 public HTTPS evidence URLs, `min_sources`
 (how many must be reachable to decide), and a `max_wait` deadline. Point evidence
-at raw verified source (Sourcify or a raw `.sol` file); up to 15,000 characters per source are read.
+at address-linked verified source where possible. A DNS-hosted HTTPS source
+counts only if it returns a nonempty, complete UTF-8 body of at most 15,000
+bytes; fetch errors, non-200 responses, oversized bodies, and IP-literal or
+explicit-port URLs are rejected. A raw `.sol` file alone does not establish
+that it is the code deployed at the address in the capability context.
 
 1. Leader and validators each fetch the evidence and judge **every frozen claim**:
    - `HOLDS`: true, with no material power undercutting it
@@ -37,4 +41,18 @@ never reviewed becomes `UNVERIFIABLE`).
     python -m genvm_linter.cli lint contracts/token_claim_capability_gate.py --json
     python -m pytest tests -v
 
-See docs/SECURITY_AUDIT.md and docs/TEST_MATRIX.md.
+See docs/SECURITY_AUDIT.md, docs/TEST_MATRIX.md, and the
+[StudioNet constructor candidate](docs/STUDIONET_RELEASE_CANDIDATE.md).
+
+## Deployment evidence scope
+
+`deployments/studionet.json` records a finalized StudioNet result for source
+commit `0d41f253db60f9a0739a7a2915a27b478bc307f6`. The local source now has
+additional evidence-validation fixes and is **not** the source at that address.
+The historical WETH9 input was a 36.8 KB GitHub file, while that deployed
+contract read only its first 15,000 bytes. The result is a consensus on an
+excerpt, not proof that the complete source was examined or cryptographically
+matched to the mainnet address. A bounded, address-linked DAI source and exact
+constructor example are prepared in docs/STUDIONET_RELEASE_CANDIDATE.md. A
+finalized StudioNet deployment and review of the current source are still
+required for current live proof.

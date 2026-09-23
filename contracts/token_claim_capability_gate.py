@@ -17,7 +17,7 @@ from genlayer import *
 
 MAX_SOURCES = 6
 MAX_CLAIMS = 12
-MAX_EVIDENCE_CHARS = 15000  # room for a raw verified-source file
+MAX_EVIDENCE_BYTES = 15000  # complete source files only; do not classify a prefix
 CLAIM_STATES = ("HOLDS", "QUALIFIED", "CONTRADICTED", "UNCLEAR")
 # BLOCKED and CONSISTENT are final. DISCLOSURE_REQUIRED and UNVERIFIABLE can be
 # re-reviewed, because the issuer can publish a disclosure at the frozen URLs,
@@ -38,18 +38,18 @@ def _public_https(url: str) -> None:
     if not isinstance(url, str) or not url.startswith("https://") or len(url) > 500:
         raise gl.vm.UserError("[EXPECTED] evidence URL must be bounded HTTPS")
     authority = url[8:].split("/", 1)[0].split("?", 1)[0].split("#", 1)[0]
-    if not authority or "@" in authority or "\\" in authority:
+    if any(char.isspace() for char in url) or "@" in authority or "\\" in url or ":" in authority:
         raise gl.vm.UserError("[EXPECTED] evidence URL is invalid")
-    host = authority.lower().split(":", 1)[0].rstrip(".")
+    host = authority.lower()
     if host in ("localhost", "127.0.0.1", "0.0.0.0") or host.endswith((".local", ".internal", ".localhost")):
         raise gl.vm.UserError("[EXPECTED] evidence URL must be publicly reachable")
     labels = host.split(".")
-    if all(label.isdigit() for label in labels):
-        if len(labels) != 4 or any(int(label) > 255 for label in labels):
-            raise gl.vm.UserError("[EXPECTED] evidence URL is invalid")
-        octets = [int(label) for label in labels]
-        if octets[0] in (0, 10, 127) or octets[0] >= 224 or (octets[0] == 100 and 64 <= octets[1] <= 127) or (octets[0] == 169 and octets[1] == 254) or (octets[0] == 172 and 16 <= octets[1] <= 31) or (octets[0] == 192 and octets[1] == 168) or (octets[0] == 198 and octets[1] in (18, 19)):
-            raise gl.vm.UserError("[EXPECTED] evidence URL must be publicly reachable")
+    if (len(labels) < 2 or labels[-1].isdigit() or any(
+        not 1 <= len(label) <= 63 or not label[0].isalnum() or not label[-1].isalnum()
+        or any(not (char.isascii() and (char.isalnum() or char == "-")) for char in label)
+        for label in labels
+    )):
+        raise gl.vm.UserError("[EXPECTED] evidence URL must be publicly reachable")
 
 
 def _time(value: str) -> datetime:
@@ -90,11 +90,16 @@ def _judge(claims: list, capability_context: dict, urls: list, min_sources: int)
     claim_ids = [claim["id"] for claim in claims]
     evidence, coverage = [], 0
     for index, url in enumerate(urls):
-        response = gl.nondet.web.get(url)
-        ok = response.status == 200
+        try:
+            response = gl.nondet.web.get(url)
+            raw = response.body if response.status == 200 else b""
+            body = raw.decode("utf-8") if 0 < len(raw) <= MAX_EVIDENCE_BYTES else ""
+            ok = bool(body.strip())
+        except Exception:
+            ok = False
+            body = ""
         coverage += 1 if ok else 0
-        body = response.body[:MAX_EVIDENCE_CHARS].decode("utf-8", errors="replace") if ok else "[UNAVAILABLE]"
-        evidence.append({"id": str(index), "url": url, "available": ok, "content": body})
+        evidence.append({"id": str(index), "url": url, "available": ok, "content": body if ok else "[UNAVAILABLE]"})
     if coverage < min_sources:
         # Too few frozen sources reachable to decide: fail closed without the LLM.
         return _derive({c: "UNCLEAR" for c in claim_ids}, coverage, min_sources)
