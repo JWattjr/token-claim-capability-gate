@@ -93,6 +93,7 @@
     "url": "https://sourcify.dev/server/v2/contract/1/0x408e41876cCCDC0F92210600ef50372656052a38?fields=sources",
     "http_status": 200,
     "raw_bytes": 10308,
+    "raw_body_sha256": "262678d331fb9d8f0cf5b1603422020149449e555485dd8109bf8102e0d13478",
     "valid_utf8": true,
     "complete_body": true,
     "source_file": "RepublicToken.sol",
