@@ -5,6 +5,7 @@ const path = require("node:path");
 // Run with `genlayer deploy` while the CLI network is set to studionet.
 // The CLI supplies its active, unlocked account through `client`.
 module.exports = async function deployTokenClaimCapabilityGate(client) {
+  if (client.chain?.id !== 61999) throw new Error("StudioNet only (chain 61999)");
   const root = path.resolve(__dirname, "..");
   const candidate = fs.readFileSync(
     path.join(root, "docs", "STUDIONET_RELEASE_CANDIDATE.md"),
@@ -14,8 +15,9 @@ module.exports = async function deployTokenClaimCapabilityGate(client) {
   if (!block) throw new Error("Missing candidate constructor JSON");
 
   const args = JSON.parse(block[1]);
-  if (!Array.isArray(args) || args.length !== 6 || args.slice(0, 4).some((arg) => typeof arg !== "string")) {
-    throw new Error("Candidate constructor must contain six positional arguments");
+  if (!Array.isArray(args) || args.length !== 8 || args.slice(0, 4).some((arg) => typeof arg !== "string")
+      || args[7] !== 3 || client.account.address.toLowerCase() !== args[6].toLowerCase()) {
+    throw new Error("Candidate requires eight arguments, three rounds, and the configured issuer account");
   }
   const context = JSON.parse(args[2]);
   const urls = JSON.parse(args[3]);

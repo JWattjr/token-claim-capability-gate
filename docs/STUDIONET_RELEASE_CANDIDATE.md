@@ -1,52 +1,56 @@
-# StudioNet release candidate: DAI capability example
+# StudioNet release candidate: REN disclosure protocol
 
-This is the frozen constructor example used for the current StudioNet release.
-The live deployment and review proof is in
-[`deployments/studionet-release-2026-09-23.json`](../deployments/studionet-release-2026-09-23.json).
-The claims below are deliberately hypothetical; they are not statements
-attributed to the DAI issuer.
+This replaces the historical DAI constructor example. DAI and WETH9 manifests
+are historical and do not verify the new protocol. Claims and disclosures here
+are controlled hypothetical examples, not statements attributed to REN's issuer.
 
-## Public evidence checked on 2026-09-23
+## Source preflight (2026-10-11)
 
-- Contract: Ethereum mainnet DAI at `0x6B175474E89094C44Da98b954EedeAC495271d0F`.
-- Frozen evidence URL: `https://sourcify.dev/server/v2/contract/1/0x6B175474E89094C44Da98b954EedeAC495271d0F?fields=sources`
-- Human-readable [Sourcify contract record](https://repo.sourcify.dev/1/0x6B175474E89094C44Da98b954EedeAC495271d0F).
-- Read-only HTTPS GET returned HTTP 200, `application/json; charset=utf-8`,
-  and 8,603 response bytes. The response identified chain `1`, the same address,
-  one source file (`Dai.sol`, 7,965 UTF-8 bytes), and `match: "match"`.
-- Sourcify's **Match** means the recompiled functional bytecode matches the
-  deployed code apart from its metadata hash; it is not an Exact Match. See
-  [Sourcify's match definitions](https://docs.sourcify.dev/docs/exact-match-vs-match/).
-- In that source, `mint(address,uint)` requires the `auth` modifier, `auth`
-  permits addresses in `wards`, and `rely` can grant that permission. Successful
-  `transferFrom` subtracts `wad` from the sender and adds `wad` to the recipient.
-
-The API URL is the single frozen evidence source. Unlike the historical WETH9
-GitHub URL, it returns the full address-linked source record within the current
-15,000-byte limit. Recheck status, response size, address, match type, source
-count, and relevant code immediately before deployment; API content and access
-from GenVM may differ from this local preflight.
+- Token: Republic Token (REN), Ethereum chain 1, `0x408e41876cCCDC0F92210600ef50372656052a38`.
+- Frozen source URL: https://sourcify.dev/server/v2/contract/1/0x408e41876cCCDC0F92210600ef50372656052a38?fields=sources
+- curl returned HTTP 200 and **10,308 raw bytes**, complete UTF-8, one source
+  file `RepublicToken.sol` (9,475 UTF-8 bytes, including original CRLF).
+- Sourcify reports creation/runtime `match`, not `exact_match`. This is
+  address-linked verification metadata, not proof of present role custody/state.
+- Read the entire source before writing the disclosures. `owner`/`onlyOwner`
+  control `pause()`/`unpause()`; `whenNotPaused` gates standard transfers and
+  approval updates. `burn()` and owner-only `transferTokens()` are not gated.
+  No token-code timer or multisig check exists. The truthful disclosure preserves
+  these exceptions and conditions instead of claiming all operations stop.
+- Deployment uses the existing StudioNet account moment-grid-studionet as the
+  appointed demo issuer (not the real-world token issuer). The expected wrong
+  issuer is the existing portal-five-release-new account.
 
 ## Exact constructor arguments (in order)
 
 ```json
 [
-  "dai-mainnet-illustrative-claims",
-  "{\"claims\":[{\"id\":\"no_admin_mint\",\"text\":\"No privileged address can mint additional DAI.\"},{\"id\":\"no_transfer_fee\",\"text\":\"The token contract deducts no fee from a successful transfer: the amount debited from the sender is credited in full to the recipient.\"}]}",
-  "{\"chain\":\"eip155:1\",\"token_address\":\"0x6B175474E89094C44Da98b954EedeAC495271d0F\",\"name\":\"Dai Stablecoin\"}",
-  "[\"https://sourcify.dev/server/v2/contract/1/0x6B175474E89094C44Da98b954EedeAC495271d0F?fields=sources\"]",
+  "ren-mainnet-hypothetical-holder-transfer",
+  "{\"claims\":[{\"id\":\"holder_transfer\",\"text\":\"Ordinary token holders can use transfer to move their own tokens to a nonzero recipient whenever their balance covers the amount.\"}]}",
+  "{\"chain\":\"eip155:1\",\"token_address\":\"0x408e41876cCCDC0F92210600ef50372656052a38\",\"name\":\"Republic Token (REN)\",\"scope\":\"Source-defined holder transfer; hypothetical example, not an issuer-attributed claim. No assertion about current owner identity or paused state.\"}",
+  "[\"https://sourcify.dev/server/v2/contract/1/0x408e41876cCCDC0F92210600ef50372656052a38?fields=sources\"]",
   1,
-  "2027-12-31T00:00:00Z"
+  "2026-11-11T00:00:00Z",
+  "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+  3
 ]
 ```
 
-The live StudioNet review produced `no_admin_mint = CONTRADICTED` and
-`no_transfer_fee = HOLDS`, yielding terminal `BLOCKED` through deterministic
-derivation. Its receipt finalized with successful leader execution and a
-3 AGREE / 2 DISAGREE majority. This does not attribute either claim to DAI's
-issuer or establish behavior for other claim vectors.
+## Bounded demo sequence
 
-The release used `genlayer deploy` on `studionet`.
-`deploy/00_deploy_token.js` passes JSON fields as strings and prints the source
-SHA-256 and transaction hash. Running it again would create a new contract;
-the current address and receipts are in the release manifest.
+Deploy the committed source once using `genlayer deploy` on StudioNet. Verify
+FINALIZED and leader SUCCESS separately, then byte-for-byte deployed-source
+identity against the committed Git blob without normalization.
+
+1. Permissionless review -> DISCLOSURE_REQUIRED, agenda [holder_transfer, PAUSE].
+2. Wrong issuer submission -> expected execution error, unchanged read-back.
+3. vague.md -> INADEQUATE, round 1 consumed.
+4. pause-false.md -> INADEQUATE, round 2 consumed.
+5. Replay vague.md URL -> expected execution error, unchanged read-back.
+6. pause.md -> LISTED_WITH_DISCLOSURE, round 3 consumed, exact attestation.
+
+Use raw.githubusercontent.com URLs pinned to the disclosure commit. Wait for
+FINALIZED and read get_state after every transaction. If any judgment differs,
+stop after that step: no retry or redeploy. Source or disclosure transport may
+differ inside GenVM from local curl. Source outages do not use a round; an
+unavailable disclosure uses a round, even if sources are also unavailable.
