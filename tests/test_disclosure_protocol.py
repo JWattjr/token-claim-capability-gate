@@ -4,6 +4,7 @@ import ast
 import copy
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -14,9 +15,19 @@ from test_gate import ALL_HOLD, CLAIMS, ISSUER, SRC, _deploy, _mock
 OTHER = b"\x03" * 20
 TRANSFER_CLAIMS = {"claims": [{"id": "transfer", "text": "Holders can transfer tokens freely."}]}
 VAGUE = "Administrators retain some operational controls."
+# Synthetic minimal source, not a live token or issuer statement.
+SOURCE_CODE = """contract ControlledToken {
+    address public pauser;
+    bool public paused;
+    constructor(address appointedPauser) { pauser = appointedPauser; }
+    function pause() external { require(msg.sender == pauser); paused = true; }
+    function unpause() external { require(msg.sender == pauser); paused = false; }
+    function transfer(address, uint256) external { require(!paused); }
+}"""
 SPECIFIC = (
-    "The PAUSER_ROLE can exercise PAUSE. While paused, transfers stop. "
-    "The role cannot seize balances, change fees, or mint through the pause function."
+    "The pauser account can exercise PAUSE at any time through pause(). While paused, "
+    "transfers stop. The same pauser can call unpause(). No time limit or multisig "
+    "approval is enforced by this code."
 )
 URL = "https://example.org/disclosures/one"
 
@@ -26,24 +37,43 @@ def qualified(direct_vm, direct_deploy, powers=("PAUSE",), max_rounds=3, max_wai
     if max_wait is not None:
         kwargs["max_wait"] = max_wait
     c = _deploy(direct_deploy, **kwargs)
-    _mock(direct_vm, {"transfer": "QUALIFIED"}, powers={"transfer": list(powers)})
+    _mock(direct_vm, {"transfer": "QUALIFIED"}, powers={"transfer": list(powers)}, body=SOURCE_CODE)
     return c, c.review()
 
 
-def disclosure_mock(direct_vm, agenda, verdict="ADEQUATE", body=SPECIFIC, status=200):
+def disclosure_mock(direct_vm, agenda, verdict="ADEQUATE", body=SPECIFIC, status=200,
+                    source_body=SOURCE_CODE, source_status=200, prompt_pattern="Judge issuer disclosure adequacy"):
     direct_vm.clear_mocks()
-    direct_vm.mock_web(".*", {"status": status, "body": body})
-    rows = [
+    direct_vm.mock_web(r"/disclosures/", {"status": status, "body": body})
+    if source_body is not None:
+        direct_vm.mock_web(r"/token-source$", {"status": source_status, "body": source_body})
+    rows = [] if verdict is None else [
         {"claim_id": c, "power": p, "verdict": verdict[(c, p)] if isinstance(verdict, dict) else verdict}
         for c, p in agenda
     ]
-    direct_vm.mock_llm("Judge issuer disclosure adequacy", json.dumps({"verdicts": rows}))
+    if verdict is not None:
+        direct_vm.mock_llm(prompt_pattern, json.dumps({"verdicts": rows}))
     return rows
 
 
 def submit(direct_vm, c, url=URL):
     with direct_vm.prank(ISSUER):
         return c.submit_disclosure(url)
+
+
+def consistency_prompt(body):
+    """Mock only matches if the real prompt binds both fetched bodies and the rubric.
+
+    The returned semantic verdict is controlled; this is not a live LLM proof.
+    """
+    return (
+        r"(?s)Judge issuer disclosure adequacy"
+        + r"(?=.*" + re.escape(json.dumps(body)) + r")"
+        + r"(?=.*Frozen source evidence:)"
+        + r"(?=.*" + re.escape(json.dumps(SOURCE_CODE)) + r")"
+        + r"(?=.*states nothing that contradicts the frozen source evidence)"
+        + r"(?=.*limits the code does not enforce is INADEQUATE)"
+    )
 
 
 def test_qualified_agenda_is_sorted_by_claim_and_power(direct_vm, direct_deploy):
@@ -72,12 +102,29 @@ def test_review_remains_permissionless_and_unverifiable_can_retry(direct_vm, dir
     assert c.get_state()["attempts"] == 2
 
 
-def test_unclear_precedes_contradiction_as_specified(direct_vm, direct_deploy):
+def test_contradiction_precedes_unclear_with_sufficient_coverage_and_is_final(direct_vm, direct_deploy):
     c = _deploy(direct_deploy)
     _mock(direct_vm, dict(ALL_HOLD, no_mint="CONTRADICTED", no_freeze="UNCLEAR"))
-    assert c.review()["decision"] == "UNVERIFIABLE"
-    assert c.get_state()["agenda"] == []
-    assert not c.get_state()["terminal"]
+    result = c.review()
+    assert result["decision"] == "BLOCKED" and direct_vm.run_validator()
+    before = c.get_state()
+    assert before["agenda"] == [] and before["terminal"]
+    direct_vm.clear_mocks()
+    assert c.review() == before  # Final, with no refetch or model call.
+    with direct_vm.prank(ISSUER):
+        with direct_vm.expect_revert("open DISCLOSURE_REQUIRED"):
+            c.submit_disclosure(URL)
+    assert c.get_state() == before
+
+
+def test_insufficient_coverage_cannot_judge_contradiction(direct_vm, direct_deploy):
+    c = _deploy(direct_deploy)
+    _mock(direct_vm, dict(ALL_HOLD, no_mint="CONTRADICTED", no_freeze="UNCLEAR"), status=503)
+    result = c.review()
+    assert result["decision"] == "UNVERIFIABLE" and result["source_coverage"] == 0
+    assert set(result["claim_states"].values()) == {"UNCLEAR"}
+    assert result["contradicted_claims"] == [] and not c.get_state()["terminal"]
+    assert direct_vm.run_validator()
 
 
 def test_nonissuer_disclosure_reverts_before_fetch_and_preserves_state(direct_vm, direct_deploy):
@@ -106,6 +153,7 @@ def test_vague_disclosure_uses_round_and_preserves_original_agenda(direct_vm, di
     assert state["disclosure_history"] == [{
         "round": 1, "url": URL, "digest": hashlib.sha256(VAGUE.encode()).hexdigest(),
         "available": True, "verdicts": result["verdicts"],
+        "source_coverage": 1, "source_evidence_digest": result["source_evidence_digest"],
     }]
 
 
@@ -126,7 +174,7 @@ def test_specific_disclosure_lists_with_exact_attestation_and_retained_history(d
     disclosure_mock(direct_vm, first["agenda"], verdict="INADEQUATE", body=VAGUE)
     submit(direct_vm, c)
     old_history = copy.deepcopy(c.get_state()["disclosure_history"])
-    disclosure_mock(direct_vm, first["agenda"])
+    disclosure_mock(direct_vm, first["agenda"], prompt_pattern=consistency_prompt(SPECIFIC))
     result = submit(direct_vm, c, "https://example.org/disclosures/two")
     assert result["decision"] == "LISTED_WITH_DISCLOSURE" and direct_vm.run_validator()
     claims_digest = hashlib.sha256(
@@ -141,7 +189,9 @@ def test_specific_disclosure_lists_with_exact_attestation_and_retained_history(d
         "disclosure_url": "https://example.org/disclosures/two",
         "disclosure_digest": hashlib.sha256(SPECIFIC.encode()).hexdigest(),
         "round": 2, "verdicts": result["verdicts"],
+        "source_coverage": 1, "source_evidence_digest": result["source_evidence_digest"],
     }
+    assert result["source_evidence_digest"] == first["evidence_digest"]
     direct_vm.clear_mocks()
     with direct_vm.prank(ISSUER):
         with direct_vm.expect_revert("open DISCLOSURE_REQUIRED"):
@@ -159,6 +209,55 @@ def test_pause_disclosure_cannot_blanket_satisfy_mint_pair(direct_vm, direct_dep
     result = submit(direct_vm, c)
     assert result["verdicts"] == rows and result["decision"] == "DISCLOSURE_REQUIRED"
     assert c.get_state()["attestation"] == {} and direct_vm.run_validator()
+
+
+@pytest.mark.parametrize("false_limit", [
+    "The pauser account can exercise PAUSE, stopping transfers, but pause() enforces a 24-hour time limit.",
+    "The pauser account can exercise PAUSE, stopping transfers, but pause() enforces approval by a 2-of-3 multisig.",
+], ids=["unenforced-time-limit", "unenforced-multisig"])
+def test_specific_but_source_inconsistent_disclosure_is_inadequate(direct_vm, direct_deploy, false_limit):
+    c, first = qualified(direct_vm, direct_deploy)
+    disclosure_mock(direct_vm, first["agenda"], verdict="INADEQUATE", body=false_limit,
+                    prompt_pattern=consistency_prompt(false_limit))
+    result = submit(direct_vm, c)
+    assert result["available"] and result["source_coverage"] == 1
+    assert result["verdicts"] == [{"claim_id": "transfer", "power": "PAUSE", "verdict": "INADEQUATE"}]
+    assert result["decision"] == "DISCLOSURE_REQUIRED" and direct_vm.run_validator()
+    assert c.get_state()["rounds_used"] == 1 and c.get_state()["attestation"] == {}
+
+
+@pytest.mark.parametrize("body,status", [
+    ("offline", 503), ("", 200), ("x" * 15001, 200), (b"\xff", 200), (None, 200),
+], ids=["non-200", "empty", "oversized", "invalid-utf8", "transport"])
+def test_round2_unavailable_frozen_sources_force_all_unclear_and_use_round(direct_vm, direct_deploy, body, status):
+    c, first = qualified(direct_vm, direct_deploy, powers=("MINT", "PAUSE"))
+    disclosure_mock(direct_vm, first["agenda"], verdict=None, source_body=body, source_status=status)
+    # Failure is mechanical; no semantic model answer exists.
+    result = submit(direct_vm, c)
+    assert result["available"] and result["source_coverage"] == 0
+    assert all(v["verdict"] == "UNCLEAR" for v in result["verdicts"])
+    assert result["decision"] == "DISCLOSURE_REQUIRED" and direct_vm.run_validator()
+    state = c.get_state()
+    assert state["rounds_used"] == 1 and state["attestation"] == {}
+    assert state["disclosure_history"][0]["source_evidence_digest"] == result["source_evidence_digest"]
+    assert result["source_evidence_digest"] != first["evidence_digest"]
+
+
+def test_round2_partial_frozen_sources_below_threshold_use_last_round(direct_vm, direct_deploy):
+    c = _deploy(direct_deploy, claims=TRANSFER_CLAIMS, max_rounds=1, min_sources=2,
+                urls=["https://example.org/token-source", "https://example.net/token-source"])
+    _mock(direct_vm, {"transfer": "QUALIFIED"}, powers={"transfer": ["PAUSE"]}, body=SOURCE_CODE)
+    first = c.review()
+    direct_vm.clear_mocks()
+    direct_vm.mock_web(r"example\.org/token-source$", {"status": 200, "body": SOURCE_CODE})
+    direct_vm.mock_web(r"example\.net/token-source$", {"status": 503, "body": "offline"})
+    direct_vm.mock_web(r"/disclosures/", {"status": 200, "body": SPECIFIC})
+    result = submit(direct_vm, c)
+    assert result["source_coverage"] == 1 and result["available"]
+    assert result["verdicts"] == [{"claim_id": "transfer", "power": "PAUSE", "verdict": "UNCLEAR"}]
+    assert result["decision"] == "DISCLOSURE_REJECTED" and direct_vm.run_validator()
+    assert c.get_state()["terminal"] and c.get_state()["rounds_used"] == 1
+    assert c.get_state()["agenda"] == first["agenda"] and c.get_state()["attestation"] == {}
 
 
 @pytest.mark.parametrize("max_rounds", [1, 2, 3])
@@ -318,7 +417,8 @@ def test_round2_same_decision_but_forged_per_pair_verdict_is_rejected(direct_vm,
     assert not direct_vm.run_validator(leader_result=forged)
 
 
-@pytest.mark.parametrize("field", ["decision", "round", "disclosure_url", "disclosure_digest", "available", "verdicts"])
+@pytest.mark.parametrize("field", ["decision", "round", "disclosure_url", "disclosure_digest", "available", "verdicts",
+                                  "source_coverage", "source_evidence_digest"])
 def test_round2_validator_rejects_mutation_of_every_result_field(direct_vm, direct_deploy, field):
     c, first = qualified(direct_vm, direct_deploy)
     disclosure_mock(direct_vm, first["agenda"])
@@ -328,6 +428,7 @@ def test_round2_validator_rejects_mutation_of_every_result_field(direct_vm, dire
         "decision": "DISCLOSURE_REQUIRED", "round": True, "disclosure_url": "https://example.org/forged",
         "disclosure_digest": "0" * 64, "available": 1,
         "verdicts": [{"claim_id": "transfer", "power": "MINT", "verdict": "ADEQUATE"}],
+        "source_coverage": True, "source_evidence_digest": "0" * 64,
     }
     forged[field] = mutations[field]
     assert not direct_vm.run_validator(leader_result=forged)
@@ -339,6 +440,43 @@ def test_round2_validator_refetches_same_url_and_rejects_changed_body(direct_vm,
     honest = submit(direct_vm, c)
     disclosure_mock(direct_vm, first["agenda"], body=SPECIFIC + " Edited after retrieval.")
     assert not direct_vm.run_validator(leader_result=honest)
+
+
+def test_round2_same_verdicts_but_forged_source_evidence_digest_is_rejected(direct_vm, direct_deploy):
+    c, first = qualified(direct_vm, direct_deploy)
+    disclosure_mock(direct_vm, first["agenda"])
+    honest = submit(direct_vm, c)
+    forged = dict(honest, source_evidence_digest="0" * 64)
+    assert forged["verdicts"] == honest["verdicts"] and forged["decision"] == honest["decision"]
+    assert not direct_vm.run_validator(leader_result=forged)
+
+
+def test_round2_validator_independently_refetches_frozen_source_bodies(direct_vm, direct_deploy):
+    c, first = qualified(direct_vm, direct_deploy)
+    disclosure_mock(direct_vm, first["agenda"])
+    honest = submit(direct_vm, c)
+    disclosure_mock(direct_vm, first["agenda"], source_body=SOURCE_CODE + " // changed source")
+    assert not direct_vm.run_validator(leader_result=honest)
+
+
+@pytest.mark.parametrize("field,value", [
+    ("source_coverage", -1), ("source_coverage", 2), ("source_coverage", "1"),
+    ("source_evidence_digest", ""), ("source_evidence_digest", ["0" * 64]),
+    ("source_evidence_digest", "G" * 64),
+], ids=["negative-coverage", "excessive-coverage", "string-coverage", "empty-digest", "nested-digest", "nonhex-digest"])
+def test_round2_validator_rejects_malformed_source_binding(direct_vm, direct_deploy, field, value):
+    c, first = qualified(direct_vm, direct_deploy)
+    disclosure_mock(direct_vm, first["agenda"])
+    honest = submit(direct_vm, c)
+    assert not direct_vm.run_validator(leader_result=dict(honest, **{field: value}))
+
+
+def test_round2_validator_rejects_adequate_verdicts_with_insufficient_coverage(direct_vm, direct_deploy):
+    c, first = qualified(direct_vm, direct_deploy)
+    disclosure_mock(direct_vm, first["agenda"])
+    honest = submit(direct_vm, c)
+    forged = dict(honest, source_coverage=0, decision="DISCLOSURE_REQUIRED")
+    assert not direct_vm.run_validator(leader_result=forged)
 
 
 @pytest.mark.parametrize("kind", ["unknown", "duplicate", "empty-qualified", "powers-for-holds",

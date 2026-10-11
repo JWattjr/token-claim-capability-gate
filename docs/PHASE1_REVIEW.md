@@ -2,6 +2,12 @@
 
 Date: 2026-10-11 (Africa/Lagos client date).
 
+Historical checkpoint: this report describes local commit `4ab487e` before the
+two follow-up specification fixes. Its 102-test count and source hashes apply
+only to that checkpoint. The precedence and specificity-only concerns below
+were subsequently addressed; see [the updated audit](SECURITY_AUDIT.md) and
+[follow-up results](PHASE1_SPEC_FIX_RESULTS.md). No checkpoint is newly deployed.
+
 Scope completed locally: constructor additions, two consensus paths, frozen agenda,
 issuer disclosure rounds, attestation, bounded history, direct tests, lint and schema.
 Stop point: the requested local commit, awaiting approval before Phase 2.

@@ -21,11 +21,11 @@ def _deploy(direct_deploy, claims=CLAIMS, urls=URLS, min_sources=1, max_wait=MAX
     return direct_deploy(SRC, "token", claims, CONTEXT, urls, min_sources, max_wait, issuer, max_rounds)
 
 
-def _mock(direct_vm, states, status=200, powers=None):
+def _mock(direct_vm, states, status=200, powers=None, body="verified source"):
     if powers is None:
         defaults = {"no_mint": "MINT", "no_freeze": "FREEZE", "fixed_fee": "FEE_CHANGE"}
         powers = {c: [defaults[c]] if s == "QUALIFIED" else [] for c, s in states.items()}
-    direct_vm.mock_web(r".*", {"status": status, "body": "verified source"})
+    direct_vm.mock_web(r".*", {"status": status, "body": body})
     direct_vm.mock_llm("Judge each token claim", json.dumps({"claim_states": states, "powers_per_claim": powers}))
 
 
