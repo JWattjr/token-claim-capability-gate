@@ -1,0 +1,1337 @@
+{
+  "evidence_role": "CURRENT_STUDIONET_ISSUER_DISCLOSURE_PROTOCOL",
+  "historical": false,
+  "date": "2026-10-11",
+  "submission_scope": "studionet-only",
+  "contract": "TokenClaimCapabilityGate",
+  "network": "studionet",
+  "chain_id": 61999,
+  "rpc_url": "https://studio.genlayer.com/api",
+  "source_file": "contracts/token_claim_capability_gate.py",
+  "source_commit": "34be6640d96627dca84e35bf985c60f0e4fa2657",
+  "git_blob_hash": "75c644e39b0ff68b8a648a0eaeb5868d5b72a70d",
+  "source_sha256": "61262d820cecb622388c551bdbc885b5039a45eb4aed90eb877ec87e1a9a90da",
+  "runner": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6",
+  "source_identity": {
+    "verified": true,
+    "method": "Decoded gen_getContractCode base64 bytes compared directly with git cat-file blob source_commit:source_file; no line-ending normalization.",
+    "source_commit": "34be6640d96627dca84e35bf985c60f0e4fa2657",
+    "contract_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+    "bytes_equal_to_git_blob": true,
+    "git_blob_hash_of_deployed_source": "75c644e39b0ff68b8a648a0eaeb5868d5b72a70d",
+    "deployed_sha256": "61262d820cecb622388c551bdbc885b5039a45eb4aed90eb877ec87e1a9a90da",
+    "git_blob_sha256": "61262d820cecb622388c551bdbc885b5039a45eb4aed90eb877ec87e1a9a90da",
+    "deployed_bytes": 28471,
+    "git_bytes": 28471,
+    "cr_bytes": 0,
+    "header": "# { \"Depends\": \"py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6\" }"
+  },
+  "toolchain": {
+    "genlayer_cli": "0.39.2",
+    "node": "24.12.0",
+    "python": "3.14.2",
+    "pytest": "9.0.2",
+    "genlayer_test": "0.29.2",
+    "genvm_linter": "0.11.1rc2",
+    "genlayer_py": "0.18.0",
+    "genlayer_js": "1.1.8"
+  },
+  "verification": {
+    "tests": {
+      "passed": 124,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 9.79,
+      "command": "python -X utf8 -m pytest tests -vv --tb=short",
+      "scope": "In-memory direct-mode behavioral tests with controlled web/model fixtures and explicitly exercised validator callbacks; not hosted consensus."
+    },
+    "lint": {
+      "ok": true,
+      "lint": {
+        "ok": true,
+        "passed": 3
+      },
+      "validate": {
+        "ok": true,
+        "contract": "TokenClaimCapabilityGate",
+        "methods": 3,
+        "view_methods": 1,
+        "write_methods": 2,
+        "ctor_params": 8,
+        "warnings": [
+          {
+            "code": "I200",
+            "msg": "py-genlayer: a newer runner is available (babwp9t37jw9g4j2bccgn14g6x7x9s1f7dsmh7emvz735pz4zxa0). See https://github.com/genlayerlabs/genvm-manager/releases for changes."
+          }
+        ]
+      }
+    },
+    "lint_command": "python -X utf8 -m genvm_linter.cli check contracts/token_claim_capability_gate.py --json",
+    "constructor_receipt_matches_exact_args": true
+  },
+  "contract_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+  "explorer_contract_url": "https://explorer-studio.genlayer.com/address/0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+  "constructor_args": [
+    "ren-mainnet-hypothetical-holder-transfer",
+    "{\"claims\":[{\"id\":\"holder_transfer\",\"text\":\"Ordinary token holders can use transfer to move their own tokens to a nonzero recipient whenever their balance covers the amount.\"}]}",
+    "{\"chain\":\"eip155:1\",\"token_address\":\"0x408e41876cCCDC0F92210600ef50372656052a38\",\"name\":\"Republic Token (REN)\",\"scope\":\"Source-defined holder transfer; hypothetical example, not an issuer-attributed claim. No assertion about current owner identity or paused state.\"}",
+    "[\"https://sourcify.dev/server/v2/contract/1/0x408e41876cCCDC0F92210600ef50372656052a38?fields=sources\"]",
+    1,
+    "2026-11-11T00:00:00Z",
+    "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+    3
+  ],
+  "appointed_demo_issuer": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+  "issuer_identity_verified": false,
+  "disclosure_commit": "34be6640d96627dca84e35bf985c60f0e4fa2657",
+  "disclosure_urls": {
+    "vague": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md",
+    "pause-false": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md",
+    "pause": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md"
+  },
+  "source_preflight": {
+    "url": "https://sourcify.dev/server/v2/contract/1/0x408e41876cCCDC0F92210600ef50372656052a38?fields=sources",
+    "http_status": 200,
+    "raw_bytes": 10308,
+    "valid_utf8": true,
+    "complete_body": true,
+    "source_file": "RepublicToken.sol",
+    "source_file_utf8_bytes": 9475,
+    "metadata": {
+      "matchId": "917232",
+      "creationMatch": "match",
+      "runtimeMatch": "match",
+      "verifiedAt": "2024-08-08T12:12:24Z",
+      "match": "match",
+      "chainId": "1",
+      "address": "0x408e41876cCCDC0F92210600ef50372656052a38"
+    },
+    "limits": "Sourcify Match, not Exact Match. Does not establish current owner, custody, paused state, or off-chain multisig."
+  },
+  "deployment": {
+    "step": "deployment",
+    "method": "constructor",
+    "args": [
+      "ren-mainnet-hypothetical-holder-transfer",
+      "{\"claims\":[{\"id\":\"holder_transfer\",\"text\":\"Ordinary token holders can use transfer to move their own tokens to a nonzero recipient whenever their balance covers the amount.\"}]}",
+      "{\"chain\":\"eip155:1\",\"token_address\":\"0x408e41876cCCDC0F92210600ef50372656052a38\",\"name\":\"Republic Token (REN)\",\"scope\":\"Source-defined holder transfer; hypothetical example, not an issuer-attributed claim. No assertion about current owner identity or paused state.\"}",
+      "[\"https://sourcify.dev/server/v2/contract/1/0x408e41876cCCDC0F92210600ef50372656052a38?fields=sources\"]",
+      1,
+      "2026-11-11T00:00:00Z",
+      "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+      3
+    ],
+    "tx_hash": "0x72bc972bc1fdca22b2744d0aafcaa48c29cd7903dd0dacb26d6d3dbaf5696da8",
+    "expected_failure": false,
+    "receipt": {
+      "hash": "0x72bc972bc1fdca22b2744d0aafcaa48c29cd7903dd0dacb26d6d3dbaf5696da8",
+      "lifecycle": "FINALIZED",
+      "lifecycle_numeric": 7,
+      "consensus_result": "MAJORITY_AGREE",
+      "from_address": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+      "to_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+      "constructor_calldata": "{\"args\":[\"ren-mainnet-hypothetical-holder-transfer\",\"{\\\"claims\\\":[{\\\"id\\\":\\\"holder_transfer\\\",\\\"text\\\":\\\"Ordinary token holders can use transfer to move their own tokens to a nonzero recipient whenever their balance covers the amount.\\\"}]}\",\"{\\\"chain\\\":\\\"eip155:1\\\",\\\"token_address\\\":\\\"0x408e41876cCCDC0F92210600ef50372656052a38\\\",\\\"name\\\":\\\"Republic Token (REN)\\\",\\\"scope\\\":\\\"Source-defined holder transfer; hypothetical example, not an issuer-attributed claim. No assertion about current owner identity or paused state.\\\"}\",\"[\\\"https://sourcify.dev/server/v2/contract/1/0x408e41876cCCDC0F92210600ef50372656052a38?fields=sources\\\"]\",1,\"2026-11-11T00:00:00Z\",\"0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92\",3,]}",
+      "contract_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+      "leader_execution": "SUCCESS",
+      "leader_error": null,
+      "leader_result": {
+        "status": "return",
+        "readable": "null"
+      },
+      "validator_votes": {
+        "0x4404Fb70d490c935758146f42A73DC850FF95C71": "agree",
+        "0xE6BD8050758CB15fC88387223E31Ae2708B119dC": "agree",
+        "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67": "agree",
+        "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8": "agree",
+        "0xec2Fb79cd12255Eb34886CEd7332f27B98DEe658": "agree"
+      },
+      "last_round": {
+        "round": "0",
+        "leader_index": "0",
+        "votes_committed": "5",
+        "votes_revealed": "5",
+        "appeal_bond": "0",
+        "rotations_left": "3",
+        "result": 6,
+        "round_validators": [
+          "0xE6BD8050758CB15fC88387223E31Ae2708B119dC",
+          "0xcE1d6bBB36B744536153966B4DD42276f5ADd0F8",
+          "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
+          "0x4404Fb70d490c935758146f42A73DC850FF95C71",
+          "0xec2Fb79cd12255Eb34886CEd7332f27B98DEe658"
+        ],
+        "validator_votes_hash": [
+          "0x6832b2bd95cf969ba8df343bec5cf29772d96703f5626392461ba012f361a3c5",
+          "0x4c9b47989925626dca5e7cae739f454f7b5e8258b3c96eb3a455e957fd17523f",
+          "0xf272869b0b78296ab0d322c82d2b31faee852d1eac5f86e98c6a3b79c2438d79",
+          "0xc8c2e2fced7a5d6f2d3c199e1e7ef2d2bb8fb0151d0d0385758d7c694d90a55f",
+          "0x705b4a018207e38a8d4241cf218e6ee69f6deec274c110b2dd702d8fd485a060"
+        ],
+        "validator_votes": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "validator_votes_name": [
+          "AGREE",
+          "AGREE",
+          "AGREE",
+          "AGREE",
+          "AGREE"
+        ]
+      },
+      "created_at": "2026-10-11T14:14:59.276026+00:00",
+      "lifecycle_history": {
+        "rounds": [
+          {
+            "monitoring": {
+              "PENDING": 1791728099.6058109,
+              "ACCEPTED": 1791728102.376654,
+              "PROPOSING": 1791728099.6176896,
+              "REVEALING": 1791728102.3359282,
+              "COMMITTING": 1791728100.7378385
+            }
+          }
+        ],
+        "current_monitoring": {
+          "FINALIZED": 1791728132.4572709
+        },
+        "current_status_changes": [
+          "FINALIZED"
+        ]
+      }
+    },
+    "state": {
+      "agenda": [],
+      "attempts": 0,
+      "attestation": {},
+      "claim_states": {},
+      "contradicted_claims": [],
+      "disclosure_history": [],
+      "evidence_digest": "",
+      "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+      "max_disclosure_rounds": 3,
+      "max_wait": "2026-11-11T00:00:00+00:00",
+      "min_sources": 1,
+      "powers_per_claim": {},
+      "qualified_claims": [],
+      "rounds_used": 0,
+      "source_coverage": 0,
+      "status": "PENDING",
+      "terminal": false,
+      "token_id": "ren-mainnet-hypothetical-holder-transfer"
+    },
+    "explorer_url": "https://explorer-studio.genlayer.com/tx/0x72bc972bc1fdca22b2744d0aafcaa48c29cd7903dd0dacb26d6d3dbaf5696da8",
+    "accepted_recorded": true,
+    "finalized_recorded": true,
+    "execution_success": true,
+    "votes": {
+      "agree": 5,
+      "disagree": 0,
+      "idle": 0
+    },
+    "readback_selector": "latest-final"
+  },
+  "demo": [
+    {
+      "step": "a_review",
+      "tx_hash": "0x45b971015451507194b200f47601751cca5e4504bffc54b23c0b991fcd26b2a0",
+      "method": "review",
+      "args": [],
+      "expected_failure": false,
+      "receipt": {
+        "hash": "0x45b971015451507194b200f47601751cca5e4504bffc54b23c0b991fcd26b2a0",
+        "lifecycle": "FINALIZED",
+        "lifecycle_numeric": 7,
+        "consensus_result": "MAJORITY_AGREE",
+        "from_address": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+        "to_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+        "constructor_calldata": "{\"method\":\"review\"}",
+        "leader_execution": "SUCCESS",
+        "leader_error": null,
+        "leader_result": {
+          "status": "return",
+          "readable": "{\"agenda\":[[\"holder_transfer\",\"PAUSE\",],]\"claim_states\":{\"holder_transfer\":\"QUALIFIED\"}\"contradicted_claims\":[]\"decision\":\"DISCLOSURE_REQUIRED\"\"evidence_digest\":\"7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b\"\"powers_per_claim\":{\"holder_transfer\":[\"PAUSE\",]}\"qualified_claims\":[\"holder_transfer\",]\"source_coverage\":1}"
+        },
+        "validator_votes": {
+          "0x3E5ee2507cc167C9925Bf10c67D7986581112024": "idle",
+          "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC": "agree",
+          "0x772ffCd1dF6Cc566eC4b8d3f4F4f8eBbb6B36C84": "agree",
+          "0xBBb165E4c9d73a1493D363280f7067Cd07891dBE": "agree",
+          "0xE6BD8050758CB15fC88387223E31Ae2708B119dC": "idle"
+        },
+        "last_round": {
+          "round": "0",
+          "leader_index": "0",
+          "votes_committed": "5",
+          "votes_revealed": "5",
+          "appeal_bond": "0",
+          "rotations_left": "3",
+          "result": 6,
+          "round_validators": [
+            "0xBBb165E4c9d73a1493D363280f7067Cd07891dBE",
+            "0xE6BD8050758CB15fC88387223E31Ae2708B119dC",
+            "0x3E5ee2507cc167C9925Bf10c67D7986581112024",
+            "0x772ffCd1dF6Cc566eC4b8d3f4F4f8eBbb6B36C84",
+            "0x4aba638Cf0Cf5249437AaD968fC69dde46ae6BAC"
+          ],
+          "validator_votes_hash": [
+            "0xa9f3e918ed6853ceca56f8e0cf5bef2eb193e2b6982c490d92a60be078e4d114",
+            "0x1c09e102f421a1f7de9a49f4d62a1c74532576c3e90e4a02c91b98db8b9984ab",
+            "0xe904aea90e3ed5bc466b016640bc4905f0bc40ff332298af8cc1b23fd8e070fc",
+            "0x724c9c22b5fe37179db39b41628ae974374e412f73f6234c9ab07a497c006ea5",
+            "0xbfc06ab5334d4ab4d711ae5d7afee4f47cb518e6e6585ac01b145caf46f428e4"
+          ],
+          "validator_votes": [
+            1,
+            5,
+            5,
+            1,
+            1
+          ],
+          "validator_votes_name": [
+            "AGREE",
+            "IDLE",
+            "IDLE",
+            "AGREE",
+            "AGREE"
+          ]
+        },
+        "created_at": "2026-10-11T14:19:32.807086+00:00",
+        "lifecycle_history": {
+          "rounds": [
+            {
+              "monitoring": {
+                "PENDING": 1791728374.836305,
+                "ACCEPTED": 1791728384.123155,
+                "PROPOSING": 1791728374.8511472,
+                "REVEALING": 1791728384.071838,
+                "COMMITTING": 1791728378.3986933
+              }
+            }
+          ],
+          "current_monitoring": {
+            "FINALIZED": 1791728414.8644273,
+            "COMMITTING.VALIDATOR_1.RUN_END": 1791728384.337388,
+            "COMMITTING.VALIDATOR_2.RUN_END": 1791728384.5091481,
+            "COMMITTING.VALIDATOR_1.RECEIPT_CREATED": 1791728384.3437002,
+            "COMMITTING.VALIDATOR_2.RECEIPT_CREATED": 1791728384.5146186,
+            "COMMITTING.VALIDATOR_1.EXECUTION_FINISHED": 1791728384.3179862,
+            "COMMITTING.VALIDATOR_2.EXECUTION_FINISHED": 1791728384.5034256
+          },
+          "current_status_changes": [
+            "FINALIZED"
+          ]
+        }
+      },
+      "state": {
+        "agenda": [
+          [
+            "holder_transfer",
+            "PAUSE"
+          ]
+        ],
+        "attempts": 1,
+        "attestation": {},
+        "claim_states": {
+          "holder_transfer": "QUALIFIED"
+        },
+        "contradicted_claims": [],
+        "disclosure_history": [],
+        "evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+        "max_disclosure_rounds": 3,
+        "max_wait": "2026-11-11T00:00:00+00:00",
+        "min_sources": 1,
+        "powers_per_claim": {
+          "holder_transfer": [
+            "PAUSE"
+          ]
+        },
+        "qualified_claims": [
+          "holder_transfer"
+        ],
+        "rounds_used": 0,
+        "source_coverage": 1,
+        "status": "DISCLOSURE_REQUIRED",
+        "terminal": false,
+        "token_id": "ren-mainnet-hypothetical-holder-transfer"
+      },
+      "explorer_url": "https://explorer-studio.genlayer.com/tx/0x45b971015451507194b200f47601751cca5e4504bffc54b23c0b991fcd26b2a0",
+      "accepted_recorded": true,
+      "finalized_recorded": true,
+      "execution_success": true,
+      "votes": {
+        "agree": 3,
+        "disagree": 0,
+        "idle": 2
+      },
+      "readback_selector": "latest-final"
+    },
+    {
+      "step": "b_non_issuer_expected_failure",
+      "method": "submit_disclosure",
+      "args": [
+        "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md"
+      ],
+      "tx_hash": "0x33cd0836209162724f8ae467cbed742ceda270a204deee3076290cc8b42f6066",
+      "expected_failure": true,
+      "receipt": {
+        "hash": "0x33cd0836209162724f8ae467cbed742ceda270a204deee3076290cc8b42f6066",
+        "lifecycle": "FINALIZED",
+        "lifecycle_numeric": 7,
+        "consensus_result": "MAJORITY_AGREE",
+        "from_address": "0x0839A6DDCeC7aA5E6028490266D6D3EFabE316B5",
+        "to_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+        "constructor_calldata": "{\"args\":[\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md\",]\"method\":\"submit_disclosure\"}",
+        "leader_execution": "ERROR",
+        "leader_error": null,
+        "leader_result": {
+          "status": "rollback"
+        },
+        "validator_votes": {
+          "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11": "agree",
+          "0x14402D49f317CE1a2F35BAE01b1804A2A9703dCb": "agree",
+          "0x3D83ab507785b95ca5C208bEc80CCe3D5ca98100": "agree",
+          "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2": "agree",
+          "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88": "agree"
+        },
+        "last_round": {
+          "round": "0",
+          "leader_index": "0",
+          "votes_committed": "5",
+          "votes_revealed": "5",
+          "appeal_bond": "0",
+          "rotations_left": "3",
+          "result": 6,
+          "round_validators": [
+            "0x14402D49f317CE1a2F35BAE01b1804A2A9703dCb",
+            "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11",
+            "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2",
+            "0x3D83ab507785b95ca5C208bEc80CCe3D5ca98100",
+            "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88"
+          ],
+          "validator_votes_hash": [
+            "0xed63e92b319f27f95382fe299a41a08b009e1e25113e739541b62420114cef48",
+            "0x781555237725ab0771896505b8dca3355bef0efaf0a42616729dc53c28d71a24",
+            "0x2df1e07ff6ac194100c7b4d894b6aff6d61cd1dc663c0b0093058582340db9ff",
+            "0x203355aed58bb75e8dc35f949f1b6df5632fee8ba99d08606b698c352a5c619e",
+            "0xffccc250b6f096bdb4f6f223720fab10a871f14aba807573594c191a5fec5604"
+          ],
+          "validator_votes": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "validator_votes_name": [
+            "AGREE",
+            "AGREE",
+            "AGREE",
+            "AGREE",
+            "AGREE"
+          ]
+        },
+        "created_at": "2026-10-11T14:25:50.764514+00:00",
+        "lifecycle_history": {
+          "rounds": [
+            {
+              "monitoring": {
+                "PENDING": 1791728752.5211108,
+                "ACCEPTED": 1791728755.0078998,
+                "PROPOSING": 1791728752.5324516,
+                "REVEALING": 1791728754.9601283,
+                "COMMITTING": 1791728753.6165013
+              }
+            }
+          ],
+          "current_monitoring": {
+            "FINALIZED": 1791728785.2769065
+          },
+          "current_status_changes": [
+            "FINALIZED"
+          ]
+        }
+      },
+      "state": {
+        "agenda": [
+          [
+            "holder_transfer",
+            "PAUSE"
+          ]
+        ],
+        "attempts": 1,
+        "attestation": {},
+        "claim_states": {
+          "holder_transfer": "QUALIFIED"
+        },
+        "contradicted_claims": [],
+        "disclosure_history": [],
+        "evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+        "max_disclosure_rounds": 3,
+        "max_wait": "2026-11-11T00:00:00+00:00",
+        "min_sources": 1,
+        "powers_per_claim": {
+          "holder_transfer": [
+            "PAUSE"
+          ]
+        },
+        "qualified_claims": [
+          "holder_transfer"
+        ],
+        "rounds_used": 0,
+        "source_coverage": 1,
+        "status": "DISCLOSURE_REQUIRED",
+        "terminal": false,
+        "token_id": "ren-mainnet-hypothetical-holder-transfer"
+      },
+      "explorer_url": "https://explorer-studio.genlayer.com/tx/0x33cd0836209162724f8ae467cbed742ceda270a204deee3076290cc8b42f6066",
+      "accepted_recorded": true,
+      "finalized_recorded": true,
+      "execution_success": false,
+      "votes": {
+        "agree": 5,
+        "disagree": 0,
+        "idle": 0
+      },
+      "readback_selector": "latest-final",
+      "failure_reason_expectation": "Only appointed issuer may submit",
+      "failure_reason_returned_by_rpc": null,
+      "failure_proof": "Leader ERROR/rollback and full unchanged latest-final state; RPC did not expose a human-readable revert reason."
+    },
+    {
+      "step": "c_vague_inadequate_round_1",
+      "method": "submit_disclosure",
+      "args": [
+        "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md"
+      ],
+      "tx_hash": "0xb27a15a1a89c61e7ab23aead16f352b141c7a9c90269c51d0acf9b35399ed849",
+      "expected_failure": false,
+      "receipt": {
+        "hash": "0xb27a15a1a89c61e7ab23aead16f352b141c7a9c90269c51d0acf9b35399ed849",
+        "lifecycle": "FINALIZED",
+        "lifecycle_numeric": 7,
+        "consensus_result": "MAJORITY_AGREE",
+        "from_address": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+        "to_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+        "constructor_calldata": "{\"args\":[\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md\",]\"method\":\"submit_disclosure\"}",
+        "leader_execution": "SUCCESS",
+        "leader_error": null,
+        "leader_result": {
+          "status": "return",
+          "readable": "{\"available\":true\"decision\":\"DISCLOSURE_REQUIRED\"\"disclosure_digest\":\"769941d43457bd35c10b3d2e043f25e8b1ed4e432a402818ee89bf73e68fa21b\"\"disclosure_url\":\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md\"\"round\":1\"source_coverage\":1\"source_evidence_digest\":\"7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b\"\"verdicts\":[{\"claim_id\":\"holder_transfer\"\"power\":\"PAUSE\"\"verdict\":\"INADEQUATE\"},]}"
+        },
+        "validator_votes": {
+          "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11": "agree",
+          "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3": "agree",
+          "0x90402341F0B0e97b23023c0a87de957FB7148E0F": "idle",
+          "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67": "agree",
+          "0xec2Fb79cd12255Eb34886CEd7332f27B98DEe658": "idle"
+        },
+        "last_round": {
+          "round": "0",
+          "leader_index": "0",
+          "votes_committed": "5",
+          "votes_revealed": "5",
+          "appeal_bond": "0",
+          "rotations_left": "3",
+          "result": 6,
+          "round_validators": [
+            "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
+            "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11",
+            "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
+            "0xec2Fb79cd12255Eb34886CEd7332f27B98DEe658",
+            "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3"
+          ],
+          "validator_votes_hash": [
+            "0xadf14d221eb6ea3af40a9c7890d9a14c2c10afb29b9a88a181261f6e0f7de173",
+            "0x2a9c2525f1babad945da7bf070e85ec9bf4c5fb9ef7444495188377974c26ffc",
+            "0xac23dd35cf37cec821070c9387c3df5a761bf878dfbf6952b57f1e951430c8db",
+            "0xe523237ce96dae2da98f1d771fea25473502a31ac86e53d22bd11ab6821e45e2",
+            "0x4f5a6c461edddea2cbdff4e1c77c80f76fb13fb84fff39929092fda3d19ec0ca"
+          ],
+          "validator_votes": [
+            5,
+            1,
+            1,
+            5,
+            1
+          ],
+          "validator_votes_name": [
+            "IDLE",
+            "AGREE",
+            "AGREE",
+            "IDLE",
+            "AGREE"
+          ]
+        },
+        "created_at": "2026-10-11T14:26:54.638809+00:00",
+        "lifecycle_history": {
+          "rounds": [
+            {
+              "monitoring": {
+                "PENDING": 1791728814.8731637,
+                "ACCEPTED": 1791728827.0062134,
+                "PROPOSING": 1791728814.889441,
+                "REVEALING": 1791728826.9716797,
+                "COMMITTING": 1791728821.1575735
+              }
+            }
+          ],
+          "current_monitoring": {
+            "FINALIZED": 1791728857.085457,
+            "COMMITTING.VALIDATOR_0.RUN_END": 1791728829.099953,
+            "COMMITTING.VALIDATOR_3.RUN_END": 1791728830.7810674,
+            "COMMITTING.VALIDATOR_0.RECEIPT_CREATED": 1791728829.105318,
+            "COMMITTING.VALIDATOR_3.RECEIPT_CREATED": 1791728830.786732,
+            "COMMITTING.VALIDATOR_0.EXECUTION_FINISHED": 1791728829.093441,
+            "COMMITTING.VALIDATOR_3.EXECUTION_FINISHED": 1791728830.7748427
+          },
+          "current_status_changes": [
+            "FINALIZED"
+          ]
+        }
+      },
+      "state": {
+        "agenda": [
+          [
+            "holder_transfer",
+            "PAUSE"
+          ]
+        ],
+        "attempts": 1,
+        "attestation": {},
+        "claim_states": {
+          "holder_transfer": "QUALIFIED"
+        },
+        "contradicted_claims": [],
+        "disclosure_history": [
+          {
+            "available": true,
+            "digest": "769941d43457bd35c10b3d2e043f25e8b1ed4e432a402818ee89bf73e68fa21b",
+            "marker": "ASSESSED",
+            "round": 1,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "INADEQUATE"
+              }
+            ]
+          }
+        ],
+        "evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+        "max_disclosure_rounds": 3,
+        "max_wait": "2026-11-11T00:00:00+00:00",
+        "min_sources": 1,
+        "powers_per_claim": {
+          "holder_transfer": [
+            "PAUSE"
+          ]
+        },
+        "qualified_claims": [
+          "holder_transfer"
+        ],
+        "rounds_used": 1,
+        "source_coverage": 1,
+        "status": "DISCLOSURE_REQUIRED",
+        "terminal": false,
+        "token_id": "ren-mainnet-hypothetical-holder-transfer"
+      },
+      "explorer_url": "https://explorer-studio.genlayer.com/tx/0xb27a15a1a89c61e7ab23aead16f352b141c7a9c90269c51d0acf9b35399ed849",
+      "accepted_recorded": true,
+      "finalized_recorded": true,
+      "execution_success": true,
+      "votes": {
+        "agree": 3,
+        "disagree": 0,
+        "idle": 2
+      },
+      "readback_selector": "latest-final"
+    },
+    {
+      "step": "d_false_specific_inadequate_round_2",
+      "method": "submit_disclosure",
+      "args": [
+        "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md"
+      ],
+      "tx_hash": "0x4f1ee77ea6adcdef618ce7d3fa7b6678ecbaf09c6a22a8999e0592035526191b",
+      "expected_failure": false,
+      "receipt": {
+        "hash": "0x4f1ee77ea6adcdef618ce7d3fa7b6678ecbaf09c6a22a8999e0592035526191b",
+        "lifecycle": "FINALIZED",
+        "lifecycle_numeric": 7,
+        "consensus_result": "MAJORITY_AGREE",
+        "from_address": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+        "to_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+        "constructor_calldata": "{\"args\":[\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md\",]\"method\":\"submit_disclosure\"}",
+        "leader_execution": "SUCCESS",
+        "leader_error": null,
+        "leader_result": {
+          "status": "return",
+          "readable": "{\"available\":true\"decision\":\"DISCLOSURE_REQUIRED\"\"disclosure_digest\":\"33cb8b6ee7afbe30816769ca71a3f8fa96a1dfa74d1c488ed4dc5af451bcc15c\"\"disclosure_url\":\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md\"\"round\":2\"source_coverage\":1\"source_evidence_digest\":\"7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b\"\"verdicts\":[{\"claim_id\":\"holder_transfer\"\"power\":\"PAUSE\"\"verdict\":\"INADEQUATE\"},]}"
+        },
+        "validator_votes": {
+          "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11": "agree",
+          "0x4404Fb70d490c935758146f42A73DC850FF95C71": "disagree",
+          "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47": "idle",
+          "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3": "agree",
+          "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88": "agree"
+        },
+        "last_round": {
+          "round": "0",
+          "leader_index": "0",
+          "votes_committed": "5",
+          "votes_revealed": "5",
+          "appeal_bond": "0",
+          "rotations_left": "3",
+          "result": 6,
+          "round_validators": [
+            "0x03D58A4DeF6fDFc032A56374785a5F571D07Bc11",
+            "0x4404Fb70d490c935758146f42A73DC850FF95C71",
+            "0x6737ca1d6BDF8b7C4f19143E2D55581Ca64eb7C3",
+            "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47",
+            "0xDB1c35c1f05d885999b8f13e5735307BcC16Be88"
+          ],
+          "validator_votes_hash": [
+            "0x3db5bf995787075b02c02cbaf1ce71ea2007ddda6b706e4cd9d2049d4d38317a",
+            "0x63f6420941fe3689616f88ab6915c34ef270f09cffd755cde2639a7bf19a2d93",
+            "0xd5f7141c4bfc21b2e4502abb8ff9760c4de0ba0afee789d599e4804ddebf0316",
+            "0x9d7d9804106b6a6ef5fee8e8ad3b07ca1e03209131ca43966120fc019e9caee5",
+            "0x6d9f444aeed6190daca8ec299e6ff90aee475cd0c467960357466afcee357b6c"
+          ],
+          "validator_votes": [
+            1,
+            2,
+            1,
+            5,
+            1
+          ],
+          "validator_votes_name": [
+            "AGREE",
+            "DISAGREE",
+            "AGREE",
+            "IDLE",
+            "AGREE"
+          ]
+        },
+        "created_at": "2026-10-11T14:28:04.279158+00:00",
+        "lifecycle_history": {
+          "rounds": [
+            {
+              "monitoring": {
+                "PENDING": 1791728887.8602736,
+                "ACCEPTED": 1791728896.6329002,
+                "PROPOSING": 1791728887.8717735,
+                "REVEALING": 1791728896.5316696,
+                "COMMITTING": 1791728891.1121912
+              }
+            }
+          ],
+          "current_monitoring": {
+            "FINALIZED": 1791728926.4139512,
+            "COMMITTING.VALIDATOR_3.RUN_END": 1791728897.140064,
+            "COMMITTING.VALIDATOR_3.RECEIPT_CREATED": 1791728897.1450388,
+            "COMMITTING.VALIDATOR_3.EXECUTION_FINISHED": 1791728897.1350567
+          },
+          "current_status_changes": [
+            "FINALIZED"
+          ]
+        }
+      },
+      "state": {
+        "agenda": [
+          [
+            "holder_transfer",
+            "PAUSE"
+          ]
+        ],
+        "attempts": 1,
+        "attestation": {},
+        "claim_states": {
+          "holder_transfer": "QUALIFIED"
+        },
+        "contradicted_claims": [],
+        "disclosure_history": [
+          {
+            "available": true,
+            "digest": "769941d43457bd35c10b3d2e043f25e8b1ed4e432a402818ee89bf73e68fa21b",
+            "marker": "ASSESSED",
+            "round": 1,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "INADEQUATE"
+              }
+            ]
+          },
+          {
+            "available": true,
+            "digest": "33cb8b6ee7afbe30816769ca71a3f8fa96a1dfa74d1c488ed4dc5af451bcc15c",
+            "marker": "ASSESSED",
+            "round": 2,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "INADEQUATE"
+              }
+            ]
+          }
+        ],
+        "evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+        "max_disclosure_rounds": 3,
+        "max_wait": "2026-11-11T00:00:00+00:00",
+        "min_sources": 1,
+        "powers_per_claim": {
+          "holder_transfer": [
+            "PAUSE"
+          ]
+        },
+        "qualified_claims": [
+          "holder_transfer"
+        ],
+        "rounds_used": 2,
+        "source_coverage": 1,
+        "status": "DISCLOSURE_REQUIRED",
+        "terminal": false,
+        "token_id": "ren-mainnet-hypothetical-holder-transfer"
+      },
+      "explorer_url": "https://explorer-studio.genlayer.com/tx/0x4f1ee77ea6adcdef618ce7d3fa7b6678ecbaf09c6a22a8999e0592035526191b",
+      "accepted_recorded": true,
+      "finalized_recorded": true,
+      "execution_success": true,
+      "votes": {
+        "agree": 3,
+        "disagree": 1,
+        "idle": 1
+      },
+      "readback_selector": "latest-final"
+    },
+    {
+      "step": "e_replay_expected_failure",
+      "method": "submit_disclosure",
+      "args": [
+        "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md"
+      ],
+      "tx_hash": "0x5a736be7a86814171277e83873bfe9328670f863b798638b96c0952004b40a30",
+      "expected_failure": true,
+      "receipt": {
+        "hash": "0x5a736be7a86814171277e83873bfe9328670f863b798638b96c0952004b40a30",
+        "lifecycle": "FINALIZED",
+        "lifecycle_numeric": 7,
+        "consensus_result": "MAJORITY_AGREE",
+        "from_address": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+        "to_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+        "constructor_calldata": "{\"args\":[\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md\",]\"method\":\"submit_disclosure\"}",
+        "leader_execution": "ERROR",
+        "leader_error": null,
+        "leader_result": {
+          "status": "rollback"
+        },
+        "validator_votes": {
+          "0x3E5ee2507cc167C9925Bf10c67D7986581112024": "agree",
+          "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47": "agree",
+          "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2": "idle",
+          "0x90402341F0B0e97b23023c0a87de957FB7148E0F": "agree",
+          "0xE6BD8050758CB15fC88387223E31Ae2708B119dC": "idle"
+        },
+        "last_round": {
+          "round": "0",
+          "leader_index": "0",
+          "votes_committed": "5",
+          "votes_revealed": "5",
+          "appeal_bond": "0",
+          "rotations_left": "3",
+          "result": 6,
+          "round_validators": [
+            "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2",
+            "0xE6BD8050758CB15fC88387223E31Ae2708B119dC",
+            "0x90402341F0B0e97b23023c0a87de957FB7148E0F",
+            "0x3E5ee2507cc167C9925Bf10c67D7986581112024",
+            "0x4EDbE1FC9EAeC7b0EBA849b0C76AE73Eb0ad5C47"
+          ],
+          "validator_votes_hash": [
+            "0x73a58ebecaf96a663b6fc5869c98c88060659461c118b219e7b4348fc23fdbc4",
+            "0x99ac66099abaf6c613725b809e4f3954c7fdc8745e0574a9df62b2cd9db6e561",
+            "0x37484f9563a55b8b8cf6b0b2ccc7bd38bfaaf339dfe5f0bca33186160a116a40",
+            "0xac7c2603d6260cfb749b1f01c71333b1bb0b2c7835781e32b6966148790e2fa0",
+            "0xfda77a4deda9835f043d015d72059ccd4d256b8d3c79830e3929613a3ae33353"
+          ],
+          "validator_votes": [
+            5,
+            5,
+            1,
+            1,
+            1
+          ],
+          "validator_votes_name": [
+            "IDLE",
+            "IDLE",
+            "AGREE",
+            "AGREE",
+            "AGREE"
+          ]
+        },
+        "created_at": "2026-10-11T14:29:24.300331+00:00",
+        "lifecycle_history": {
+          "rounds": [
+            {
+              "monitoring": {
+                "PENDING": 1791728968.9306045,
+                "ACCEPTED": 1791728972.6994708,
+                "PROPOSING": 1791728968.9805334,
+                "REVEALING": 1791728972.668324,
+                "COMMITTING": 1791728970.3051503
+              }
+            }
+          ],
+          "current_monitoring": {
+            "FINALIZED": 1791729003.2918038,
+            "COMMITTING.VALIDATOR_0.RUN_END": 1791728973.0322447,
+            "COMMITTING.VALIDATOR_1.RUN_END": 1791728973.3456163,
+            "COMMITTING.VALIDATOR_0.RECEIPT_CREATED": 1791728973.0367846,
+            "COMMITTING.VALIDATOR_1.RECEIPT_CREATED": 1791728973.3501413,
+            "COMMITTING.VALIDATOR_0.EXECUTION_FINISHED": 1791728973.0272186,
+            "COMMITTING.VALIDATOR_1.EXECUTION_FINISHED": 1791728973.3405702
+          },
+          "current_status_changes": [
+            "FINALIZED"
+          ]
+        }
+      },
+      "state": {
+        "agenda": [
+          [
+            "holder_transfer",
+            "PAUSE"
+          ]
+        ],
+        "attempts": 1,
+        "attestation": {},
+        "claim_states": {
+          "holder_transfer": "QUALIFIED"
+        },
+        "contradicted_claims": [],
+        "disclosure_history": [
+          {
+            "available": true,
+            "digest": "769941d43457bd35c10b3d2e043f25e8b1ed4e432a402818ee89bf73e68fa21b",
+            "marker": "ASSESSED",
+            "round": 1,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "INADEQUATE"
+              }
+            ]
+          },
+          {
+            "available": true,
+            "digest": "33cb8b6ee7afbe30816769ca71a3f8fa96a1dfa74d1c488ed4dc5af451bcc15c",
+            "marker": "ASSESSED",
+            "round": 2,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "INADEQUATE"
+              }
+            ]
+          }
+        ],
+        "evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+        "max_disclosure_rounds": 3,
+        "max_wait": "2026-11-11T00:00:00+00:00",
+        "min_sources": 1,
+        "powers_per_claim": {
+          "holder_transfer": [
+            "PAUSE"
+          ]
+        },
+        "qualified_claims": [
+          "holder_transfer"
+        ],
+        "rounds_used": 2,
+        "source_coverage": 1,
+        "status": "DISCLOSURE_REQUIRED",
+        "terminal": false,
+        "token_id": "ren-mainnet-hypothetical-holder-transfer"
+      },
+      "explorer_url": "https://explorer-studio.genlayer.com/tx/0x5a736be7a86814171277e83873bfe9328670f863b798638b96c0952004b40a30",
+      "accepted_recorded": true,
+      "finalized_recorded": true,
+      "execution_success": false,
+      "votes": {
+        "agree": 3,
+        "disagree": 0,
+        "idle": 2
+      },
+      "readback_selector": "latest-final",
+      "failure_reason_expectation": "Consumed disclosure URL replay prohibited",
+      "failure_reason_returned_by_rpc": null,
+      "failure_proof": "Leader ERROR/rollback and full unchanged latest-final state; RPC did not expose a human-readable revert reason."
+    },
+    {
+      "step": "f_truthful_adequate_round_3",
+      "method": "submit_disclosure",
+      "args": [
+        "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md"
+      ],
+      "tx_hash": "0x2ddb6e3860dfd6bd59eeb715860afa228063a051ac353635b6dbfd2ef973247f",
+      "expected_failure": false,
+      "receipt": {
+        "hash": "0x2ddb6e3860dfd6bd59eeb715860afa228063a051ac353635b6dbfd2ef973247f",
+        "lifecycle": "FINALIZED",
+        "lifecycle_numeric": 7,
+        "consensus_result": "MAJORITY_AGREE",
+        "from_address": "0xdB433ff614bDD1ecE21Aa97221C3E0a7ecf79c92",
+        "to_address": "0x6Ba50deF22213cbB020b66f88D4Bf1e0f7dbff2E",
+        "constructor_calldata": "{\"args\":[\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md\",]\"method\":\"submit_disclosure\"}",
+        "leader_execution": "SUCCESS",
+        "leader_error": null,
+        "leader_result": {
+          "status": "return",
+          "readable": "{\"available\":true\"decision\":\"LISTED_WITH_DISCLOSURE\"\"disclosure_digest\":\"efbc89422524f079be6024fa5769fa77e4766cf08d6d5e1d0d6c5b6b1fe2ec45\"\"disclosure_url\":\"https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md\"\"round\":3\"source_coverage\":1\"source_evidence_digest\":\"7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b\"\"verdicts\":[{\"claim_id\":\"holder_transfer\"\"power\":\"PAUSE\"\"verdict\":\"ADEQUATE\"},]}"
+        },
+        "validator_votes": {
+          "0x4404Fb70d490c935758146f42A73DC850FF95C71": "disagree",
+          "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2": "agree",
+          "0x76c25AFC12c75485703cCFfd0083AA6201455B25": "disagree",
+          "0x772ffCd1dF6Cc566eC4b8d3f4F4f8eBbb6B36C84": "agree",
+          "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67": "agree"
+        },
+        "last_round": {
+          "round": "0",
+          "leader_index": "0",
+          "votes_committed": "5",
+          "votes_revealed": "5",
+          "appeal_bond": "0",
+          "rotations_left": "3",
+          "result": 6,
+          "round_validators": [
+            "0x772ffCd1dF6Cc566eC4b8d3f4F4f8eBbb6B36C84",
+            "0xacc2459F341D7a887bcA8FAA62F1EC9378d4Bc67",
+            "0x76c25AFC12c75485703cCFfd0083AA6201455B25",
+            "0x5310dcF075E0BD47d29B8ec6581F736C767f54D2",
+            "0x4404Fb70d490c935758146f42A73DC850FF95C71"
+          ],
+          "validator_votes_hash": [
+            "0x6c682b9717156666373c7f892bf2c7e31ad8e286978fab713720947e02f1afa5",
+            "0xa5bd13be890e386450322685d6f2a9ec75dbc6d21ce730b9109f8067816c955a",
+            "0x937fcb868c8bfd499c61dcc42c7c083b029e1d0aa27da006fbb5c236cb2764e8",
+            "0x715778cea38d76d02dc6e6de50c90809b6c9bdf5e46e5d5e99d601d40db4bb7e",
+            "0x614a73b5fa9b6bb56a6ec71ba5fe97b9981adda0905635938138583f676e9d92"
+          ],
+          "validator_votes": [
+            1,
+            1,
+            2,
+            1,
+            2
+          ],
+          "validator_votes_name": [
+            "AGREE",
+            "AGREE",
+            "DISAGREE",
+            "AGREE",
+            "DISAGREE"
+          ]
+        },
+        "created_at": "2026-10-11T14:30:29.258954+00:00",
+        "lifecycle_history": {
+          "rounds": [
+            {
+              "monitoring": {
+                "PENDING": 1791729029.583344,
+                "ACCEPTED": 1791729043.9812436,
+                "PROPOSING": 1791729029.6025882,
+                "REVEALING": 1791729043.8724012,
+                "COMMITTING": 1791729033.1964042
+              }
+            }
+          ],
+          "current_monitoring": {
+            "FINALIZED": 1791729077.0612814
+          },
+          "current_status_changes": [
+            "FINALIZED"
+          ]
+        }
+      },
+      "state": {
+        "agenda": [
+          [
+            "holder_transfer",
+            "PAUSE"
+          ]
+        ],
+        "attempts": 1,
+        "attestation": {
+          "agenda": [
+            [
+              "holder_transfer",
+              "PAUSE"
+            ]
+          ],
+          "claims_digest": "609860d7607298a2e176e98ee5fbcf415436af2fb5d06a139bd70db8185de270",
+          "disclosure_digest": "efbc89422524f079be6024fa5769fa77e4766cf08d6d5e1d0d6c5b6b1fe2ec45",
+          "disclosure_url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md",
+          "round": 3,
+          "source_coverage": 1,
+          "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+          "token_id": "ren-mainnet-hypothetical-holder-transfer",
+          "verdicts": [
+            {
+              "claim_id": "holder_transfer",
+              "power": "PAUSE",
+              "verdict": "ADEQUATE"
+            }
+          ]
+        },
+        "claim_states": {
+          "holder_transfer": "QUALIFIED"
+        },
+        "contradicted_claims": [],
+        "disclosure_history": [
+          {
+            "available": true,
+            "digest": "769941d43457bd35c10b3d2e043f25e8b1ed4e432a402818ee89bf73e68fa21b",
+            "marker": "ASSESSED",
+            "round": 1,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "INADEQUATE"
+              }
+            ]
+          },
+          {
+            "available": true,
+            "digest": "33cb8b6ee7afbe30816769ca71a3f8fa96a1dfa74d1c488ed4dc5af451bcc15c",
+            "marker": "ASSESSED",
+            "round": 2,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "INADEQUATE"
+              }
+            ]
+          },
+          {
+            "available": true,
+            "digest": "efbc89422524f079be6024fa5769fa77e4766cf08d6d5e1d0d6c5b6b1fe2ec45",
+            "marker": "ASSESSED",
+            "round": 3,
+            "round_consumed": true,
+            "source_coverage": 1,
+            "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+            "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md",
+            "verdicts": [
+              {
+                "claim_id": "holder_transfer",
+                "power": "PAUSE",
+                "verdict": "ADEQUATE"
+              }
+            ]
+          }
+        ],
+        "evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+        "max_disclosure_rounds": 3,
+        "max_wait": "2026-11-11T00:00:00+00:00",
+        "min_sources": 1,
+        "powers_per_claim": {
+          "holder_transfer": [
+            "PAUSE"
+          ]
+        },
+        "qualified_claims": [
+          "holder_transfer"
+        ],
+        "rounds_used": 3,
+        "source_coverage": 1,
+        "status": "LISTED_WITH_DISCLOSURE",
+        "terminal": true,
+        "token_id": "ren-mainnet-hypothetical-holder-transfer"
+      },
+      "explorer_url": "https://explorer-studio.genlayer.com/tx/0x2ddb6e3860dfd6bd59eeb715860afa228063a051ac353635b6dbfd2ef973247f",
+      "accepted_recorded": true,
+      "finalized_recorded": true,
+      "execution_success": true,
+      "votes": {
+        "agree": 3,
+        "disagree": 2,
+        "idle": 0
+      },
+      "readback_selector": "latest-final"
+    }
+  ],
+  "final_readback": {
+    "agenda": [
+      [
+        "holder_transfer",
+        "PAUSE"
+      ]
+    ],
+    "attempts": 1,
+    "attestation": {
+      "agenda": [
+        [
+          "holder_transfer",
+          "PAUSE"
+        ]
+      ],
+      "claims_digest": "609860d7607298a2e176e98ee5fbcf415436af2fb5d06a139bd70db8185de270",
+      "disclosure_digest": "efbc89422524f079be6024fa5769fa77e4766cf08d6d5e1d0d6c5b6b1fe2ec45",
+      "disclosure_url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md",
+      "round": 3,
+      "source_coverage": 1,
+      "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+      "token_id": "ren-mainnet-hypothetical-holder-transfer",
+      "verdicts": [
+        {
+          "claim_id": "holder_transfer",
+          "power": "PAUSE",
+          "verdict": "ADEQUATE"
+        }
+      ]
+    },
+    "claim_states": {
+      "holder_transfer": "QUALIFIED"
+    },
+    "contradicted_claims": [],
+    "disclosure_history": [
+      {
+        "available": true,
+        "digest": "769941d43457bd35c10b3d2e043f25e8b1ed4e432a402818ee89bf73e68fa21b",
+        "marker": "ASSESSED",
+        "round": 1,
+        "round_consumed": true,
+        "source_coverage": 1,
+        "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/vague.md",
+        "verdicts": [
+          {
+            "claim_id": "holder_transfer",
+            "power": "PAUSE",
+            "verdict": "INADEQUATE"
+          }
+        ]
+      },
+      {
+        "available": true,
+        "digest": "33cb8b6ee7afbe30816769ca71a3f8fa96a1dfa74d1c488ed4dc5af451bcc15c",
+        "marker": "ASSESSED",
+        "round": 2,
+        "round_consumed": true,
+        "source_coverage": 1,
+        "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause-false.md",
+        "verdicts": [
+          {
+            "claim_id": "holder_transfer",
+            "power": "PAUSE",
+            "verdict": "INADEQUATE"
+          }
+        ]
+      },
+      {
+        "available": true,
+        "digest": "efbc89422524f079be6024fa5769fa77e4766cf08d6d5e1d0d6c5b6b1fe2ec45",
+        "marker": "ASSESSED",
+        "round": 3,
+        "round_consumed": true,
+        "source_coverage": 1,
+        "source_evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+        "url": "https://raw.githubusercontent.com/JWattjr/token-claim-capability-gate/34be6640d96627dca84e35bf985c60f0e4fa2657/examples/disclosures/pause.md",
+        "verdicts": [
+          {
+            "claim_id": "holder_transfer",
+            "power": "PAUSE",
+            "verdict": "ADEQUATE"
+          }
+        ]
+      }
+    ],
+    "evidence_digest": "7f62ff331cc5fd652397b314e65cbb5690c49324a7e6669361606775a75dcd6b",
+    "issuer_address": "0xdb433ff614bdd1ece21aa97221c3e0a7ecf79c92",
+    "max_disclosure_rounds": 3,
+    "max_wait": "2026-11-11T00:00:00+00:00",
+    "min_sources": 1,
+    "powers_per_claim": {
+      "holder_transfer": [
+        "PAUSE"
+      ]
+    },
+    "qualified_claims": [
+      "holder_transfer"
+    ],
+    "rounds_used": 3,
+    "source_coverage": 1,
+    "status": "LISTED_WITH_DISCLOSURE",
+    "terminal": true,
+    "token_id": "ren-mainnet-hypothetical-holder-transfer"
+  },
+  "limitations": [
+    "Claim and all three disclosures are controlled hypothetical examples, not real REN issuer statements; appointed issuer is an existing StudioNet test account.",
+    "Evidence URLs are frozen, but source bodies are refetched; per-round digests need not equal original review digest.",
+    "The false-specific live rejection supports this one case, not general prompt-injection resistance or guaranteed semantic correctness.",
+    "No funds, automatic token restrictions, or downstream listing integration are demonstrated.",
+    "Consumers must require protocol FINALIZED, successful execution and terminal allowed state; terminal alone is not finality.",
+    "Source/disclosure outage policy is covered by local fixtures, not a live outage transaction."
+  ],
+  "public_links": {
+    "repository": "https://github.com/JWattjr/token-claim-capability-gate",
+    "source_commit": "https://github.com/JWattjr/token-claim-capability-gate/commit/34be6640d96627dca84e35bf985c60f0e4fa2657",
+    "contract_source": "https://github.com/JWattjr/token-claim-capability-gate/blob/34be6640d96627dca84e35bf985c60f0e4fa2657/contracts/token_claim_capability_gate.py",
+    "tests": "https://github.com/JWattjr/token-claim-capability-gate/blob/34be6640d96627dca84e35bf985c60f0e4fa2657/tests/test_disclosure_protocol.py",
+    "audit": "https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/SECURITY_AUDIT.md",
+    "test_matrix": "https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/TEST_MATRIX.md",
+    "distinctiveness": "https://github.com/JWattjr/token-claim-capability-gate/blob/main/DISTINCTIVENESS.md",
+    "manifest": "https://github.com/JWattjr/token-claim-capability-gate/blob/main/deployments/studionet-release-2026-10-11.json",
+    "portal_package": "https://github.com/JWattjr/token-claim-capability-gate/blob/main/PORTAL_SUBMISSION.md",
+    "appeal_draft": "https://github.com/JWattjr/token-claim-capability-gate/blob/main/APPEAL.md",
+    "release_report": "https://github.com/JWattjr/token-claim-capability-gate/blob/main/docs/RELEASE_VERIFICATION.md",
+    "constructor": "https://github.com/JWattjr/token-claim-capability-gate/blob/34be6640d96627dca84e35bf985c60f0e4fa2657/docs/STUDIONET_RELEASE_CANDIDATE.md"
+  }
+}

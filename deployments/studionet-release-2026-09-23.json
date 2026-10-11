@@ -1,6 +1,7 @@
 {
-  "evidence_role": "CURRENT_STUDIONET_SUBMISSION_EVIDENCE",
-  "historical": false,
+  "evidence_role": "HISTORICAL_ONE_ROUND_DAI_DEMONSTRATION",
+  "historical": true,
+  "superseded_by": "studionet-release-2026-10-11.json",
   "submission_scope": "studionet-only",
   "contract": "TokenClaimCapabilityGate",
   "network": "studionet",

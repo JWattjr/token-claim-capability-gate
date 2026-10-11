@@ -1,5 +1,11 @@
 # Phase 1 specification-fix results
 
+Historical checkpoint at local commit 2d319151e117af099b2d826e189cc4c34f30ff80.
+Its test count, source hashes, outage-budget policy and unapproved Phase 2
+statements describe that checkpoint only. The current release manifest/audit
+supersede them: available-disclosure source outages now preserve rounds and
+fresh finalized protocol evidence exists.
+
 Date: 2026-10-11. Local follow-up to commit `4ab487e`; no push or deployment.
 
 ## Changes
