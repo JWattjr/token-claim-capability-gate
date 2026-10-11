@@ -154,6 +154,7 @@ def test_vague_disclosure_uses_round_and_preserves_original_agenda(direct_vm, di
         "round": 1, "url": URL, "digest": hashlib.sha256(VAGUE.encode()).hexdigest(),
         "available": True, "verdicts": result["verdicts"],
         "source_coverage": 1, "source_evidence_digest": result["source_evidence_digest"],
+        "round_consumed": True, "marker": "ASSESSED",
     }]
 
 
@@ -229,7 +230,7 @@ def test_specific_but_source_inconsistent_disclosure_is_inadequate(direct_vm, di
 @pytest.mark.parametrize("body,status", [
     ("offline", 503), ("", 200), ("x" * 15001, 200), (b"\xff", 200), (None, 200),
 ], ids=["non-200", "empty", "oversized", "invalid-utf8", "transport"])
-def test_round2_unavailable_frozen_sources_force_all_unclear_and_use_round(direct_vm, direct_deploy, body, status):
+def test_round2_unavailable_frozen_sources_force_all_unclear_without_using_round(direct_vm, direct_deploy, body, status):
     c, first = qualified(direct_vm, direct_deploy, powers=("MINT", "PAUSE"))
     disclosure_mock(direct_vm, first["agenda"], verdict=None, source_body=body, source_status=status)
     # Failure is mechanical; no semantic model answer exists.
@@ -238,12 +239,14 @@ def test_round2_unavailable_frozen_sources_force_all_unclear_and_use_round(direc
     assert all(v["verdict"] == "UNCLEAR" for v in result["verdicts"])
     assert result["decision"] == "DISCLOSURE_REQUIRED" and direct_vm.run_validator()
     state = c.get_state()
-    assert state["rounds_used"] == 1 and state["attestation"] == {}
+    assert state["rounds_used"] == 0 and state["attestation"] == {}
+    assert state["disclosure_history"][0]["marker"] == "SOURCES_UNAVAILABLE"
+    assert state["disclosure_history"][0]["round_consumed"] is False
     assert state["disclosure_history"][0]["source_evidence_digest"] == result["source_evidence_digest"]
     assert result["source_evidence_digest"] != first["evidence_digest"]
 
 
-def test_round2_partial_frozen_sources_below_threshold_use_last_round(direct_vm, direct_deploy):
+def test_round2_partial_frozen_sources_below_threshold_preserve_last_round(direct_vm, direct_deploy):
     c = _deploy(direct_deploy, claims=TRANSFER_CLAIMS, max_rounds=1, min_sources=2,
                 urls=["https://example.org/token-source", "https://example.net/token-source"])
     _mock(direct_vm, {"transfer": "QUALIFIED"}, powers={"transfer": ["PAUSE"]}, body=SOURCE_CODE)
@@ -255,9 +258,42 @@ def test_round2_partial_frozen_sources_below_threshold_use_last_round(direct_vm,
     result = submit(direct_vm, c)
     assert result["source_coverage"] == 1 and result["available"]
     assert result["verdicts"] == [{"claim_id": "transfer", "power": "PAUSE", "verdict": "UNCLEAR"}]
-    assert result["decision"] == "DISCLOSURE_REJECTED" and direct_vm.run_validator()
-    assert c.get_state()["terminal"] and c.get_state()["rounds_used"] == 1
+    assert result["decision"] == "DISCLOSURE_REQUIRED" and direct_vm.run_validator()
+    assert not c.get_state()["terminal"] and c.get_state()["rounds_used"] == 0
     assert c.get_state()["agenda"] == first["agenda"] and c.get_state()["attestation"] == {}
+
+
+def test_source_outage_can_retry_same_url_when_sources_recover(direct_vm, direct_deploy):
+    c, first = qualified(direct_vm, direct_deploy, max_rounds=1)
+    disclosure_mock(direct_vm, first["agenda"], source_status=503, verdict=None)
+    assert submit(direct_vm, c)["decision"] == "DISCLOSURE_REQUIRED"
+    assert c.get_state()["rounds_used"] == 0
+    disclosure_mock(direct_vm, first["agenda"])
+    assert submit(direct_vm, c)["decision"] == "LISTED_WITH_DISCLOSURE"
+    assert c.get_state()["rounds_used"] == 1
+    assert [r["round_consumed"] for r in c.get_state()["disclosure_history"]] == [False, True]
+
+
+def test_source_outage_history_is_bounded_and_preserves_consumed_url_replay(direct_vm, direct_deploy):
+    c, first = qualified(direct_vm, direct_deploy)
+    disclosure_mock(direct_vm, first["agenda"], verdict="INADEQUATE", body=VAGUE)
+    submit(direct_vm, c)
+    for i in range(12):
+        disclosure_mock(direct_vm, first["agenda"], source_status=503, verdict=None)
+        submit(direct_vm, c, f"https://example.org/disclosures/outage-{i}")
+    state = c.get_state()
+    assert len(state["disclosure_history"]) == 9 and state["rounds_used"] == 1
+    assert state["disclosure_history"][0]["url"] == URL
+    assert all(r["marker"] == "SOURCES_UNAVAILABLE" for r in state["disclosure_history"][1:])
+    direct_vm.clear_mocks()
+    with direct_vm.prank(ISSUER):
+        with direct_vm.expect_revert("already been submitted"):
+            c.submit_disclosure(URL)
+    direct_vm.warp("2100-01-01T00:00:00Z")
+    assert c.get_state()["status"] == "DISCLOSURE_REJECTED"
+    with direct_vm.prank(ISSUER):
+        with direct_vm.expect_revert("before max_wait"):
+            c.submit_disclosure("https://example.org/disclosures/late-outage")
 
 
 @pytest.mark.parametrize("max_rounds", [1, 2, 3])
@@ -313,6 +349,8 @@ def test_unavailable_disclosure_counts_round_and_never_becomes_adequate(direct_v
     assert all(v["verdict"] == "UNCLEAR" for v in result["verdicts"])
     assert result["decision"] == "DISCLOSURE_REQUIRED"
     assert c.get_state()["rounds_used"] == 1 and c.get_state()["attestation"] == {}
+    assert c.get_state()["disclosure_history"][0]["marker"] == "DISCLOSURE_UNAVAILABLE"
+    assert c.get_state()["disclosure_history"][0]["round_consumed"] is True
     assert direct_vm.run_validator()
 
 

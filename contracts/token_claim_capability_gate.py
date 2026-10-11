@@ -17,6 +17,7 @@ from genlayer import *
 MAX_SOURCES = 6
 MAX_CLAIMS = 12
 MAX_EVIDENCE_BYTES = 15000  # complete UTF-8 files only; never classify a prefix
+MAX_DISCLOSURE_HISTORY = 9  # retain all <=3 consumed rounds and recent outage attempts
 POWER = ("MINT", "PAUSE", "FREEZE", "BLACKLIST", "UPGRADE", "FEE_CHANGE", "OWNERSHIP_TRANSFER")
 CLAIM_STATES = ("HOLDS", "QUALIFIED", "CONTRADICTED", "UNCLEAR")
 DISCLOSURE_VERDICTS = ("ADEQUATE", "INADEQUATE", "UNCLEAR")
@@ -243,7 +244,9 @@ def _canonical_verdicts(verdicts, agenda):
 
 def _derive_disclosure(url, digest, available, verdicts, round_number, max_rounds,
                        coverage, min_sources, source_evidence_digest):
-    if available and coverage >= min_sources and all(v["verdict"] == "ADEQUATE" for v in verdicts):
+    if available and coverage < min_sources:
+        decision = "DISCLOSURE_REQUIRED"  # source outage is not a used disclosure round
+    elif available and all(v["verdict"] == "ADEQUATE" for v in verdicts):
         decision = "LISTED_WITH_DISCLOSURE"
     elif round_number >= max_rounds:
         decision = "DISCLOSURE_REJECTED"
@@ -487,7 +490,8 @@ class TokenClaimCapabilityGate(gl.Contract):
             raise gl.vm.UserError("[EXPECTED] disclosure rounds are exhausted")
         _public_https(disclosure_url)
         for stored in self.disclosure_history:
-            if _parse(str(stored), "disclosure history")["url"] == disclosure_url:
+            record = _parse(str(stored), "disclosure history")
+            if record["round_consumed"] and record["url"] == disclosure_url:
                 raise gl.vm.UserError("[EXPECTED] disclosure URL has already been submitted")
         agenda = _parse(str(self.agenda_json), "agenda")
         round_number, max_rounds = int(self.rounds_used) + 1, int(self.max_disclosure_rounds)
@@ -495,13 +499,31 @@ class TokenClaimCapabilityGate(gl.Contract):
             self._consensus_disclosure(disclosure_url), disclosure_url, agenda, round_number, max_rounds,
             int(self.min_sources), len(_parse(str(self.source_urls_json), "source URLs")),
         )
-        self.disclosure_history.append(_encode({
+        sources_unavailable = result["available"] and result["source_coverage"] < int(self.min_sources)
+        record = _encode({
             "round": round_number, "url": disclosure_url, "digest": result["disclosure_digest"],
             "available": result["available"], "verdicts": result["verdicts"],
             "source_coverage": result["source_coverage"],
             "source_evidence_digest": result["source_evidence_digest"],
-        }))
-        self.rounds_used = u256(round_number)
+            "round_consumed": not sources_unavailable,
+            "marker": "SOURCES_UNAVAILABLE" if sources_unavailable else (
+                "ASSESSED" if result["available"] else "DISCLOSURE_UNAVAILABLE"
+            ),
+        })
+        # Keep all consumed-round URLs for replay protection. Only old source-outage
+        # attempts can be evicted; retries remain bounded in time by max_wait.
+        records = [str(item) for item in self.disclosure_history] + [record]
+        if len(records) > MAX_DISCLOSURE_HISTORY:
+            oldest_outage = next(i for i, item in enumerate(records)
+                                 if not _parse(item, "disclosure history")["round_consumed"])
+            records.pop(oldest_outage)
+        for index, item in enumerate(records):
+            if index < len(self.disclosure_history):
+                self.disclosure_history[index] = item
+            else:
+                self.disclosure_history.append(item)
+        if not sources_unavailable:
+            self.rounds_used = u256(round_number)
         self.status = result["decision"]
         self.final = self.status in TERMINAL
         if self.status == "LISTED_WITH_DISCLOSURE":
